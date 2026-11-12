@@ -1,0 +1,192 @@
+// Prisma Schema for Kyrgyzstan Tour Bridge Aggregator
+// Matches RES Study Entities: E-001 (Organizer), E-002 (Tour), E-003 (TourDeparture), E-004 (Booking), E-005 (Review)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum VerificationStatus {
+  pending
+  verified
+  suspended
+}
+
+enum ComfortLevel {
+  basic_tent
+  nomadic_yurt
+  standard_guesthouse
+  comfort_hotel
+}
+
+enum TourStatus {
+  draft
+  pending_review
+  published
+  archived
+}
+
+enum DepartureStatus {
+  open
+  guaranteed
+  sold_out
+  closed
+  completed
+  cancelled
+}
+
+enum BookingStatus {
+  pending_deposit
+  confirmed
+  completed
+  cancelled
+  refunded
+}
+
+model Organizer {
+  id                  String             @id @default(uuid())
+  slug                String             @unique
+  brandName           String
+  legalName           String
+  registrationNumber  String
+  baseCity            String             @default("Bishkek")
+  bio                 String
+  logoUrl             String
+  coverUrl            String?
+  directSiteUrl       String?
+  phone               String
+  email               String
+  telegramHandle      String?
+  languages           String[]
+  isVerified          Boolean            @default(false)
+  verificationStatus  VerificationStatus @default(pending)
+  commissionPercent   Float              @default(15)
+  ratingAvg           Float              @default(0)
+  reviewsCount        Int                @default(0)
+  toursSoldCount      Int                @default(0)
+  peopleSignedUpCount Int                @default(0)
+  foundedYear         Int                @default(2019)
+  createdAt           DateTime           @default(now())
+  verifiedAt          DateTime?
+
+  tours    Tour[]
+  bookings Booking[]
+  reviews  Review[]
+}
+
+model Tour {
+  id                   String       @id @default(uuid())
+  organizerId          String
+  slug                 String       @unique
+  title                String
+  subtitle             String
+  regions              String[]
+  activityTypes        String[]
+  durationDays         Int          @default(1)
+  difficultyLevel      Int          @default(2)
+  comfortLevel         ComfortLevel @default(standard_guesthouse)
+  maxGroupSize         Int          @default(12)
+  minParticipants      Int          @default(4)
+  basePriceUsd         Float
+  depositPercent       Float        @default(20)
+  freeCancellationDays Int          @default(15)
+  heroImageUrl         String
+  galleryUrls          String[]
+  routeSummary         String
+  itineraryDays        Json
+  accommodationDetails String
+  transportDetails     String
+  inclusions           String[]
+  exclusions           String[]
+  status               TourStatus   @default(draft)
+  ratingAvg            Float        @default(0)
+  reviewsCount         Int          @default(0)
+  createdAt            DateTime     @default(now())
+  priceVerifiedAt      DateTime?
+
+  organizer  Organizer       @relation(fields: [organizerId], references: [id], onDelete: Restrict)
+  departures TourDeparture[]
+  bookings   Booking[]
+  reviews    Review[]
+}
+
+model TourDeparture {
+  id             String          @id @default(uuid())
+  tourId         String
+  startDate      DateTime
+  endDate        DateTime
+  priceUsd       Float
+  maxSeats       Int
+  bookedSeats    Int             @default(0)
+  heldSeats      Int             @default(0)
+  seatsRemaining Int
+  isGuaranteed   Boolean         @default(false)
+  guideLanguages String[]
+  cutoffHours    Int             @default(24)
+  status         DepartureStatus @default(open)
+  updatedAt      DateTime        @updatedAt
+
+  tour     Tour      @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  bookings Booking[]
+}
+
+model Booking {
+  id                      String        @id @default(uuid())
+  bookingCode             String        @unique
+  departureId             String
+  tourId                  String
+  organizerId             String
+  leadTravelerName        String
+  leadEmail               String
+  leadPhone               String
+  leadCountry             String
+  paxCount                Int           @default(1)
+  participants            Json
+  dietaryNotes            String?
+  totalAmountUsd          Float
+  depositAmountUsd        Float
+  balanceDueToOrganizerUsd Float
+  platformCommissionUsd   Float
+  paymentGateway          String        @default("freedom_pay")
+  paymentGatewayRef       String?
+  reviewToken             String        @unique
+  hasReview               Boolean       @default(false)
+  status                  BookingStatus @default(confirmed)
+  createdAt               DateTime      @default(now())
+  confirmedAt             DateTime?
+  completedAt             DateTime?
+
+  departure TourDeparture @relation(fields: [departureId], references: [id], onDelete: Restrict)
+  tour      Tour          @relation(fields: [tourId], references: [id], onDelete: Restrict)
+  organizer Organizer     @relation(fields: [organizerId], references: [id], onDelete: Restrict)
+  review    Review?
+}
+
+model Review {
+  id                  String    @id @default(uuid())
+  bookingId           String    @unique
+  tourId              String
+  organizerId         String
+  authorName          String
+  authorCountry       String?
+  tripDate            DateTime
+  ratingOverall       Int
+  ratingGuide         Int
+  ratingAccommodation Int
+  ratingTransport     Int
+  comment             String
+  photos              String[]
+  isVerifiedBooker    Boolean   @default(true)
+  organizerReply      String?
+  repliedAt           DateTime?
+  createdAt           DateTime  @default(now())
+
+  booking   Booking   @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  tour      Tour      @relation(fields: [tourId], references: [id], onDelete: Restrict)
+  organizer Organizer @relation(fields: [organizerId], references: [id], onDelete: Restrict)
+}
+

@@ -1,0 +1,82 @@
+erDiagram
+    ORGANIZER ||--o{ TOUR : "publishes (E-001 -> E-002)"
+    ORGANIZER ||--o{ BOOKING : "receives (E-001 -> E-004)"
+    ORGANIZER ||--o{ REVIEW : "earns (E-001 -> E-005)"
+    TOUR ||--|{ TOUR_DEPARTURE : "schedules (E-002 -> E-003)"
+    TOUR ||--o{ REVIEW : "rated_by (E-002 -> E-005)"
+    TOUR_DEPARTURE ||--o{ BOOKING : "reserves_seats (E-003 -> E-004)"
+    BOOKING ||--o| REVIEW : "unlocks_verified_review (E-004 -> E-005)"
+
+    ORGANIZER {
+        uuid id PK
+        string slug UK
+        string brandName
+        string legalName
+        string registrationNumber
+        boolean isVerified
+        number commissionPercent
+        number ratingAvg
+        integer reviewsCount
+        integer toursSoldCount
+        integer peopleSignedUpCount
+    }
+
+    TOUR {
+        uuid id PK
+        uuid organizerId FK
+        string slug UK
+        string title
+        integer durationDays
+        integer difficultyLevel
+        string comfortLevel
+        number basePriceUsd
+        number depositPercent
+        integer freeCancellationDays
+        string status
+        number ratingAvg
+        integer reviewsCount
+    }
+
+    TOUR_DEPARTURE {
+        uuid id PK
+        uuid tourId FK
+        date startDate
+        date endDate
+        number priceUsd
+        integer maxSeats
+        integer bookedSeats
+        integer heldSeats
+        integer seatsRemaining
+        boolean isGuaranteed
+        integer cutoffHours
+        string status
+    }
+
+    BOOKING {
+        uuid id PK
+        uuid departureId FK
+        uuid tourId FK
+        uuid organizerId FK
+        string leadTravelerName
+        string leadEmail
+        string leadPhone
+        integer paxCount
+        number totalAmountUsd
+        number depositAmountUsd
+        number balanceDueToOrganizerUsd
+        number platformCommissionUsd
+        string status
+    }
+
+    REVIEW {
+        uuid id PK
+        uuid bookingId FK
+        uuid tourId FK
+        uuid organizerId FK
+        string authorName
+        date tripDate
+        integer ratingOverall
+        string comment
+        boolean isVerifiedBooker
+        string organizerReply
+    }

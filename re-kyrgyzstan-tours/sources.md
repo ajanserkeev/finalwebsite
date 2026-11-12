@@ -1,0 +1,12 @@
+# Sources
+
+| ID | Title | URL | Type | Read on | Gives |
+|---|---|---|---|---|---|
+| SRC-001 | Bolshaya Strana — Official Marketplace & Direct Organizer Concept | https://bolshayastrana.com/ | docs | 2026-11-12 | Core aggregator positioning ("Direct prices from organizers without markups"), tour catalog taxonomy, difficulty (1–5) & comfort levels, group departure schedule model |
+| SRC-002 | Bolshaya Strana — Kyrgyzstan Tours Catalog (`/kirgiziya`) | https://bolshayastrana.com/kirgiziya | docs | 2026-11-12 | Kyrgyzstan tour packaging (Issyk-Kul, Song-Kul, Karakol, Pamir/Osh), inclusions (yurt stays, 4WD transport, guides, park permits), prepayment 15–30% rules |
+| SRC-003 | Bolshaya Strana — For Tour Organizers & Partners (`/organizatoram`) | https://bolshayastrana.com/organizatoram | docs | 2026-11-12 | Organizer onboarding criteria (legal registration, direct-price parity covenant, agency commission from operator margin), partner cabinet workflow (`org@bolshayastrana.com`) |
+| SRC-004 | Bolshaya Strana — Best Price Guarantee, Prepayment & Free Cancellation | https://bolshayastrana.com/ | docs | 2026-11-12 | Direct price guarantee rules, 15–25% deposit booking confirmation, balance payment to organizer, free cancellation >=15 days before departure |
+| SRC-005 | Viator — Kyrgyzstan Tours & Experiences Marketplace | https://www.viator.com/Kyrgyzstan/d22152-ttd | docs | 2026-11-12 | International traveler UX, "Free Cancellation up to 24h", "Reserve Now & Pay Later", Badge of Excellence, verified traveler reviews & photos |
+| SRC-006 | Viator Management Center (`supplier.viator.com`) — Supplier Portal Documentation | https://supplier.viator.com/ | docs | 2026-11-12 | Operator dashboard mechanics: product builder, availability & pricing tiers, booking cutoffs, manifest & participant tracking, net-rate commission (20–25%), review request tools |
+| SRC-007 | Viator Reservation System Connectivity API Specification | https://docs.viator.com/partner-api/technical/ | api | 2026-11-12 | REST JSON architecture for catalog sync, real-time availability check, booking hold/reserve, cutoff enforcement, cancellation & redemption |
+| SRC-008 | Kyrgyzstan Online Acquiring & Tourism Regulation Overview (Freedom Pay, Finik, MBANK, Elkart, Dept. of Tourism KR) | https://freedompay.kg/ | docs | 2026-11-12 | Local & cross-border payment gateways in Kyrgyzstan (Visa/Mastercard for foreign tourists, Elkart/MBANK/QR for domestic), Finik payment links, 3D-Secure & legal registration requirements |
