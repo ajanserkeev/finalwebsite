@@ -1,48 +1,31 @@
 # NomadBridge KG — Kyrgyzstan Tour Bridge Aggregator
 
-A full-stack **Kyrgyzstan Tour Bridge Aggregator** built from a Reverse Engineering SaaS (RES) study of **Bolshaya Strana (`bolshayastrana.com`)** and **Viator (`viator.com`)**.
+A modern Viator-inspired **Kyrgyzstan Tour Bridge Aggregator** connecting travelers directly with verified local Kyrgyz tour operators at **0% markup** (exact direct organizer prices).
 
 ## Core Value Proposition
-- **100% Direct Organizer Prices (0% Markup):** Tourists book at the exact same price as booking directly with the local Kyrgyz tour organizer.
-- **Open Organizer Profiles (`S-003`, `S-004`, `R-001`):** Unlike opaque OTAs that hide the local operator until after payment, every tour card and detail page openly showcases the verified Kyrgyz organizer, their legal registration (`ОсОО` / `ИП`), guide team, 4WD fleet, and aggregated reviews.
-- **20% Online Deposit Split (`R-003`):** Tourists pay only the 15%–20% reservation deposit online (Visa/Mastercard via Freedom Pay KG / Stripe, Finik QR, or MBANK/Elkart) to lock their seats, and pay the remaining 80%–85% directly to the organizer on arrival.
-- **100% Completed-Booking Verified Reviews (`R-007`, `R-008`):** Only travelers with a completed booking token can submit a review, updating both the Tour rating and the Organizer's overall rating.
+- **100% Direct Organizer Prices (0% Markup):** Travelers book at the exact same price as booking directly with the local Kyrgyz organizer, backed by a Lowest Direct-Price Guarantee & Price-Match Claim workflow.
+- **Open Organizer Storefronts (`/organizers`, `/organizers/[slug]`):** Every experience openly displays the real licensed Kyrgyz operator (`ОсОО` / `ИП`), 4WD fleet, lead mountain guides, travelers hosted, and verified reviews.
+- **Reserve Now, Pay Later (20% Online Deposit Split):** Lock seats with a 20% online reservation deposit (`Freedom Pay KG`, `Stripe`, `Finik`, `MBANK / Elkart QR`) and pay the remaining 80% directly to the organizer on arrival in Kyrgyzstan. Free cancellation up to 15 days prior.
+- **100% Completed-Booking Verified Reviews:** Reviews require a verified completed booking token and update both Tour and Organizer ratings across 4 dimensions (*Overall, Guide, Accommodation, 4WD Transport*).
 
 ---
 
-## Three Connected Portals
+## Connected Portals & Features
 
-1. **Public Tourist Marketplace (`/`, `/tours`, `/tours/[slug]`, `/organizers/[slug]`):**
-   - Multi-currency switcher (`USD`, `KGS`, `EUR`, `RUB`).
-   - Kyrgyzstan-specific filters: Region (*Song-Kul*, *Kel-Suu*, *Karakol & Ala-Kul*, *Issyk-Kul*, *Ala-Archa*, *Sary-Chelek*, *Pamir & Osh*), Activity Type, Difficulty (`1–5`), Comfort (*Tent, Felt Yurt, Guesthouse, Hotel*), and *"Guaranteed Departures Only"* (`R-004`).
-   - Interactive Group Departure Schedule & Seat Quota Matrix (`C-004`).
-   - Online Deposit Checkout Modal (`S-005`) with atomic seat quota locking (`R-005`) and cutoff enforcement (`R-006`).
+1. **Public Marketplace (`/`, `/tours`, `/tours/[slug]`, `/organizers`, `/organizers/[slug]`):**
+   - Modern Viator-style homepage with unified search pill, live autocomplete popover, interactive category tabs, and bespoke Kyrgyzstan photography across all 7 iconic regions (*Song-Kul, Issyk-Kul & Skazka Canyon, Kel-Suu, Karakol & Ala-Kul, Ala-Archa, Sary-Chelek, Osh & Lenin Peak*).
+   - Multi-currency switcher (`USD`, `KGS`, `EUR`, `RUB`), **Wishlist Drawer**, and **My Trips & Booking Vouchers Drawer** with self-service free cancellation and review token copy.
+   - Tour detail page with 5-photo editorial mosaic, full-screen photo lightbox, sticky **"Select Date & Travelers"** booking card, vertical timeline itinerary, group departure matrix, and verified reviews.
 
-2. **Dedicated Tour Operator / Partner Portal (`/partner` — `S-006`):**
-   - Strictly isolated per operator (`R-012`) with a demo switcher in the header.
-   - Real-time KPI counters (`C-006`, `R-009`):
-     - **Total Tours Sold (Bookings Count)**
-     - **Total People Signed Up (`Pax` Participants)**
-     - **Gross Tour Sales Volume**
-     - **Direct Balance Collectible on Arrival vs. Platform Commission**
-   - 1-click `[−]` / `[+]` seat capacity adjustments (`R-011`) to sync offline Instagram/WhatsApp sales.
-   - Downloadable **Participant Manifests (CSV)** for mountain guides & drivers.
-   - Self-service Tour Builder (`F-010`) and Official Review Reply console (`C-005`).
+2. **Tour Operator Partner Portal (`/partner`):**
+   - Multi-tenant operator switcher with real-time KPIs: **Total Tours Sold**, **Total People Signed Up (`Pax`)**, Gross Volume, and 80% Balance Due on Arrival.
+   - 1-click `[−]` / `[+]` seat capacity sync, smart departure scheduler (auto-fills tour duration & direct price), Guide Participant Manifests with CSV export, Tour Builder, and Official Review Reply console.
 
-3. **Separate Platform Admin Panel (`/admin` — `S-007`):**
-   - **Organizer KYC Verification Queue (`R-013`)** and custom agency commission % configuration.
-   - **Tour Moderation & Direct-Price Parity Audit Queue (`R-002`)** + Price-Match Claims resolution.
-   - **Master Bookings, Deposit Escrow & Refund Ledger (`R-010`)** with 1-click free-cancellation deposit refund and automatic seat restoration.
-   - **Verified Reviews Audit Log (`R-007`)**.
-
----
-
-## RES Study Knowledge Base
-The complete Reverse Engineering SaaS (RES) study is included in [`re-kyrgyzstan-tours/`](./re-kyrgyzstan-tours/):
-- Standalone HTML Report: [`re-kyrgyzstan-tours/REPORT.html`](./re-kyrgyzstan-tours/REPORT.html)
-- Agent Build Brief: [`re-kyrgyzstan-tours/BUILD.md`](./re-kyrgyzstan-tours/BUILD.md)
-- Product Requirements Document: [`re-kyrgyzstan-tours/clone/prd.md`](./re-kyrgyzstan-tours/clone/prd.md)
-- Parity Test Suite: [`re-kyrgyzstan-tours/clone/parity.md`](./re-kyrgyzstan-tours/clone/parity.md)
+3. **Platform Admin Control Center (`/admin`):**
+   - **Organizer KYC Verification & Commission % Management**
+   - **Tour Direct-Price Parity Moderation & Price-Match Claims Queue**
+   - **Master Bookings, Deposit Escrow & Free-Cancellation Refund Ledger** (with search & status filters)
+   - **Verified Reviews Audit Log**
 
 ---
 
@@ -54,4 +37,3 @@ npm run dev
 ```
 
 Open `http://localhost:3000` in your browser.
-

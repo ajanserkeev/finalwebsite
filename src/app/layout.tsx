@@ -1,13 +1,28 @@
 import type { Metadata } from 'next';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { MarketplaceProvider } from '@/context/MarketplaceContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
+import { DrawersAndToasts } from '@/components/DrawersAndToasts';
+
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  weight: ['500', '600', '700', '800'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'NomadBridge KG — Direct Kyrgyzstan Tours Aggregator (0% Markup)',
+  title: 'NomadBridge KG — Book Kyrgyzstan Tours Direct from Local Organizers',
   description:
-    'Book multi-day Kyrgyzstan mountain, yurt, and horseback tours directly from verified local organizers at their official direct price. Open organizer profiles, real tourist reviews, Partner Portal & Admin Panel.',
+    'Discover and book top-rated Kyrgyzstan mountain expeditions, Song-Kul yurt camps, horseback treks, and day trips at exact direct organizer prices (0% markup). Free cancellation, verified reviews & real-time seats.',
 };
 
 export default function RootLayout({
@@ -16,15 +31,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased">
+    <html lang="en" className={`${inter.variable} ${plusJakarta.variable}`}>
+      <body className="min-h-screen flex flex-col bg-white text-gray-900 antialiased selection:bg-[#008768]/15 selection:text-[#004F32]">
         <MarketplaceProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <DrawersAndToasts />
         </MarketplaceProvider>
       </body>
     </html>
   );
 }
-

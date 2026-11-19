@@ -13,13 +13,12 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     slug: 'tien-shan-nomads',
     brandName: 'Tien Shan Nomads Expedition',
     legalName: 'ОсОО «Тянь-Шань Номадс Тревел» (LLC)',
-    registrationNumber: 'ИНН 01804201910248 · Реестр ДТ КР #KG-0412',
+    registrationNumber: 'ИНН 01804201910248 · License #KG-0412',
     baseCity: 'Bishkek',
     bio: 'Founded by certified Kyrgyz mountain guides and nomadic culture specialists in Bishkek. We operate our own fleet of prepared Toyota Sequoia & Land Cruiser 4WD vehicles and partner directly with family yurt camps at Song-Kul, Kel-Suu, and Issyk-Kul.',
     logoUrl:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80',
-    coverUrl:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80',
+    coverUrl: '/images/hero-song-kul.jpg',
     directSiteUrl: 'https://tienshannomads.kg',
     phone: '+996 555 41 20 88',
     email: 'booking@tienshannomads.kg',
@@ -30,10 +29,11 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     commissionPercent: 15,
     ratingAvg: 4.95,
     reviewsCount: 4,
-    toursSoldCount: 5,
-    peopleSignedUpCount: 15,
+    toursSoldCount: 7,
+    peopleSignedUpCount: 20,
     foundedYear: 2018,
-    fleetSummary: '8x Toyota Land Cruiser 200 / Sequoia 4WD, 3x Mercedes Sprinter 4x4, Private Heated Yurt Camp at Song-Kul South Shore',
+    fleetSummary:
+      '8x Toyota Land Cruiser 200 / Sequoia 4WD, 3x Mercedes Sprinter 4x4, Private Heated Yurt Camp at Song-Kul South Shore',
     guides: [
       {
         name: 'Azamat Kadyrov',
@@ -60,13 +60,12 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     slug: 'karakol-alpine-club',
     brandName: 'Karakol Alpine & Freeride Club',
     legalName: 'ИП Асанов Тимур Бакытович (IE)',
-    registrationNumber: 'ИНН 21108198800419 · Реестр ДТ КР #KG-0891',
+    registrationNumber: 'ИНН 21108198800419 · License #KG-0891',
     baseCity: 'Karakol',
     bio: 'Local Karakol mountain outfitters specializing in high-altitude trekking over Ala-Kul Pass (3,900m), Altyn-Arashan hot springs, Jeti-Oguz valleys, and winter ski-touring in the Terskey Alatau range.',
     logoUrl:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80',
-    coverUrl:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1400&q=80',
+    coverUrl: '/images/ala-kul-karakol.jpg',
     directSiteUrl: 'https://karakolalpine.kg',
     phone: '+996 700 88 19 42',
     email: 'timur@karakolalpine.kg',
@@ -75,12 +74,13 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     isVerified: true,
     verificationStatus: 'verified',
     commissionPercent: 15,
-    ratingAvg: 4.92,
+    ratingAvg: 4.9,
     reviewsCount: 3,
-    toursSoldCount: 3,
-    peopleSignedUpCount: 9,
+    toursSoldCount: 4,
+    peopleSignedUpCount: 11,
     foundedYear: 2016,
-    fleetSummary: 'Prepared UAZ & GAZ-66 High-Clearance Mountain Trucks, Salewa 4-Season Expedition Tents, Base Guesthouse in Karakol',
+    fleetSummary:
+      'Prepared UAZ & GAZ-66 High-Clearance Mountain Trucks, Salewa 4-Season Expedition Tents, Base Guesthouse in Karakol',
     guides: [
       {
         name: 'Timur Asanov',
@@ -107,13 +107,12 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     slug: 'pamir-silk-road-osh',
     brandName: 'Pamir & Silk Road Odyssey',
     legalName: 'ОсОО «Памир Силк Роуд Экспедишн» (LLC)',
-    registrationNumber: 'ИНН 02409202010551 · Реестр ДТ КР #KG-1104',
+    registrationNumber: 'ИНН 02409202010551 · License #KG-1104',
     baseCity: 'Osh',
     bio: 'Southern Kyrgyzstan & Pamir Highway experts based in Osh. We run small-group expeditions to Sary-Chelek UNESCO Biosphere Lake, Arslanbob royal walnut forests, and Tulpar-Kul Lake beneath Lenin Peak (7,134m).',
     logoUrl:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=240&q=80',
-    coverUrl:
-      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&q=80',
+    coverUrl: '/images/pamir-lenin-peak.jpg',
     directSiteUrl: 'https://pamirsilkroad.kg',
     phone: '+996 772 31 09 15',
     email: 'osh@pamirsilkroad.kg',
@@ -122,15 +121,16 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     isVerified: true,
     verificationStatus: 'verified',
     commissionPercent: 18,
-    ratingAvg: 4.9,
+    ratingAvg: 4.95,
     reviewsCount: 2,
-    toursSoldCount: 2,
-    peopleSignedUpCount: 5,
+    toursSoldCount: 3,
+    peopleSignedUpCount: 7,
     foundedYear: 2020,
-    fleetSummary: '6x Toyota Hilux & Land Cruiser Prado 4WD, Lenin Peak Basecamp Heated Yurt Complex at Tulpar-Kul (3,500m)',
+    fleetSummary:
+      '6x Toyota Hilux & Land Cruiser Prado 4WD, Lenin Peak Basecamp Heated Yurt Complex at Tulpar-Kul (3,500m)',
     guides: [
       {
-        name: 'BakytbekSuleimanov',
+        name: 'Bakytbek Suleimanov',
         role: 'Southern Silk Road & Pamir Leader',
         experienceYears: 12,
         languages: ['EN', 'RU', 'KG'],
@@ -146,13 +146,12 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     slug: 'naryn-horseback-guild',
     brandName: 'Naryn Nomadic Horseback Guild',
     legalName: 'ИП Жумабаев Нурлан (IE)',
-    registrationNumber: 'ИНН 20503199100772 · Заявка ДТ КР #KG-2049',
+    registrationNumber: 'ИНН 20503199100772 · Application #KG-2049',
     baseCity: 'Naryn',
     bio: 'Authentic family-owned shepherd and horseman collective in Naryn oblast offering multi-day horseback treks around Tash-Rabat Caravanserai, Chatyr-Kul, and Song-Kul.',
     logoUrl:
       'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=240&q=80',
-    coverUrl:
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1400&q=80',
+    coverUrl: '/images/horseback-song-kul.jpg',
     directSiteUrl: 'https://instagram.com/naryn_horse_guild',
     phone: '+996 501 99 44 11',
     email: 'nurlan@narynhorseguild.kg',
@@ -166,7 +165,8 @@ export const INITIAL_ORGANIZERS: Organizer[] = [
     toursSoldCount: 0,
     peopleSignedUpCount: 0,
     foundedYear: 2023,
-    fleetSummary: '24 Mountain-Trained Kyrgyz Horses, Traditional Yurt Camp near Tash-Rabat (3,200m)',
+    fleetSummary:
+      '24 Mountain-Trained Kyrgyz Horses, Traditional Yurt Camp near Tash-Rabat (3,200m)',
     guides: [
       {
         name: 'Nurlan Zhumabaev',
@@ -189,7 +189,7 @@ export const INITIAL_TOURS: Tour[] = [
     slug: 'golden-ring-of-kyrgyzstan-7-days-song-kul-issyk-kul',
     title: '7-Day Golden Ring of Kyrgyzstan: Song-Kul Yurts, Karakol & Issyk-Kul Canyons',
     subtitle:
-      'Our signature small-group 4WD journey through Burana Tower, Chon-Kemin, alpine Song-Kul Lake (3,016m), Skazka Canyon, Eagle Hunting in Bokonbaevo, and Karakol.',
+      'Our signature small-group 4WD journey through Burana Tower, Chon-Kemin, alpine Song-Kul Lake (3,016m), Skazka Canyon, Golden Eagle hunting in Bokonbaevo, and Karakol.',
     regions: ['song-kul', 'issyk-kul', 'karakol', 'ala-archa'],
     activityTypes: ['jeep-4wd', 'cultural-yurt'],
     durationDays: 7,
@@ -200,13 +200,13 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 750,
     depositPercent: 20,
     freeCancellationDays: 15,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/hero-song-kul.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
+      '/images/hero-song-kul.jpg',
+      '/images/issyk-kul-skazka.jpg',
+      '/images/eagle-hunter-yurt.jpg',
+      '/images/ala-kul-karakol.jpg',
+      '/images/chon-kemin-jeep.jpg',
     ],
     routeSummary:
       'Bishkek → Burana Tower → Chon-Kemin → Song-Kul Lake (Yurt Stay) → Bokonbaevo (Eagle Hunter) → Skazka Canyon → Barskoon → Jeti-Oguz → Karakol → Cholpon-Ata → Bishkek',
@@ -220,7 +220,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '3h paved mountain road',
         maxAltitudeM: 1600,
         meals: ['L', 'D'],
-        accommodation: 'Eco-Boutique Guesthouse in Chon-Kemin (Private En-Suite Twin Rooms, Hot Shower, Wi-Fi)',
+        accommodation:
+          'Eco-Boutique Guesthouse in Chon-Kemin (Private En-Suite Twin Rooms, Hot Shower, Wi-Fi)',
       },
       {
         dayNumber: 2,
@@ -231,7 +232,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '4.5h (2h gravel mountain pass)',
         maxAltitudeM: 3446,
         meals: ['B', 'L', 'D'],
-        accommodation: 'Nomadic Heated Felt Yurt Camp at Song-Kul (3,016m) — 4 beds per yurt, wood stove, clean heated western toilets & hot shower cabin on camp grounds',
+        accommodation:
+          'Nomadic Heated Felt Yurt Camp at Song-Kul (3,016m) — 4 beds per yurt, wood stove, clean heated western toilets & hot shower cabin',
       },
       {
         dayNumber: 3,
@@ -242,7 +244,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '5h scenic mountain descent',
         maxAltitudeM: 3133,
         meals: ['B', 'L', 'D'],
-        accommodation: 'Lakeside Glamping Yurt & Boutique Lodge in Bokonbaevo (En-suite washrooms, beach access)',
+        accommodation:
+          'Lakeside Glamping Yurt & Boutique Lodge in Bokonbaevo (En-suite washrooms, beach access)',
       },
       {
         dayNumber: 4,
@@ -309,8 +312,8 @@ export const INITIAL_TOURS: Tour[] = [
       'Single room supplement ($140 across all hotel nights)',
     ],
     status: 'published',
-    ratingAvg: 4.97,
-    reviewsCount: 3,
+    ratingAvg: 5.0,
+    reviewsCount: 2,
     createdAt: '2025-04-01T08:00:00Z',
     priceVerifiedAt: '2026-11-01T10:00:00Z',
   },
@@ -331,11 +334,12 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 640,
     depositPercent: 20,
     freeCancellationDays: 15,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/kel-suu-canyon.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80',
+      '/images/kel-suu-canyon.jpg',
+      '/images/chon-kemin-jeep.jpg',
+      '/images/hero-song-kul.jpg',
+      '/images/horseback-song-kul.jpg',
     ],
     routeSummary:
       'Bishkek → Kochkor → Naryn → Aksai Valley Border Zone → Kel-Suu Lake (3,514m) → Tash-Rabat Caravanserai → Bishkek',
@@ -360,7 +364,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '4.5h off-road 4WD track',
         maxAltitudeM: 3400,
         meals: ['B', 'L', 'D'],
-        accommodation: 'Heated Expedition Yurt Camp in Kok-Kiya Valley (3,300m, wood stoves & electric generator)',
+        accommodation:
+          'Heated Expedition Yurt Camp in Kok-Kiya Valley (3,300m, wood stoves & electric generator)',
       },
       {
         dayNumber: 3,
@@ -398,7 +403,8 @@ export const INITIAL_TOURS: Tour[] = [
     ],
     accommodationDetails:
       '1 night in 3* Naryn hotel (private bathroom) + 3 nights in authentic heated mountain yurt camps at Kok-Kiya (Kel-Suu) and Tash-Rabat (sub-zero sleeping bags & extra wool blankets provided).',
-    transportDetails: 'Prepared Toyota Land Cruiser 100/200 or Sequoia 4WD SUVs (maximum 4 passengers per vehicle).',
+    transportDetails:
+      'Prepared Toyota Land Cruiser 100/200 or Sequoia 4WD SUVs (maximum 4 passengers per vehicle).',
     inclusions: [
       'Official Aksai / Kel-Suu Border Zone Permit (arranged in advance by Tien Shan Nomads)',
       '4WD SUV transport with experienced off-road driver & fuel',
@@ -411,7 +417,7 @@ export const INITIAL_TOURS: Tour[] = [
       'Personal travel insurance',
     ],
     status: 'published',
-    ratingAvg: 4.9,
+    ratingAvg: 5.0,
     reviewsCount: 1,
     createdAt: '2025-04-10T10:00:00Z',
     priceVerifiedAt: '2026-11-01T10:00:00Z',
@@ -433,11 +439,12 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 580,
     depositPercent: 20,
     freeCancellationDays: 14,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/ala-kul-karakol.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80',
+      '/images/ala-kul-karakol.jpg',
+      '/images/ala-archa-gorge.jpg',
+      '/images/issyk-kul-skazka.jpg',
+      '/images/hero-song-kul.jpg',
     ],
     routeSummary:
       'Bishkek → Karakol Gorge → Sirota Camp → Ala-Kul Lake (3,532m) → Ala-Kul Pass (3,900m) → Altyn-Arashan Hot Springs → Karakol → Issyk-Kul → Bishkek',
@@ -484,7 +491,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '3h trekking',
         maxAltitudeM: 2600,
         meals: ['B', 'L', 'D'],
-        accommodation: 'Wooden Mountain Lodge & Yurt Camp in Altyn-Arashan (Hot Spring Pools on-site)',
+        accommodation:
+          'Wooden Mountain Lodge & Yurt Camp in Altyn-Arashan (Hot Spring Pools on-site)',
       },
       {
         dayNumber: 5,
@@ -511,7 +519,8 @@ export const INITIAL_TOURS: Tour[] = [
     ],
     accommodationDetails:
       '2 nights in private en-suite guesthouses (Karakol & Issyk-Kul) + 3 nights in mountain yurt/tent camps with full camp kitchen, hot meals, and sleeping bags (-10°C comfort) included.',
-    transportDetails: 'Minibus transfer Bishkek–Karakol–Bishkek + 4x4 UAZ/GAZ-66 mountain shuttle in Karakol & Altyn-Arashan gorges.',
+    transportDetails:
+      'Minibus transfer Bishkek–Karakol–Bishkek + 4x4 UAZ/GAZ-66 mountain shuttle in Karakol & Altyn-Arashan gorges.',
     inclusions: [
       'KMGA certified mountain guide & camp cook',
       'All camping gear (Salewa tents, thick mats, -10°C sleeping bags with clean liners)',
@@ -524,7 +533,7 @@ export const INITIAL_TOURS: Tour[] = [
       'Personal porter for personal bag ($35/day optional)',
     ],
     status: 'published',
-    ratingAvg: 4.93,
+    ratingAvg: 4.85,
     reviewsCount: 2,
     createdAt: '2025-04-15T10:00:00Z',
     priceVerifiedAt: '2026-11-02T09:00:00Z',
@@ -546,11 +555,11 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 420,
     depositPercent: 20,
     freeCancellationDays: 10,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/horseback-song-kul.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
+      '/images/horseback-song-kul.jpg',
+      '/images/hero-song-kul.jpg',
+      '/images/eagle-hunter-yurt.jpg',
     ],
     routeSummary:
       'Bishkek → Kochkor → Kyzart Village → Kilemche Jailoo → Jalgyz-Karagai Pass (3,320m) → Song-Kul Lake → Bishkek',
@@ -602,7 +611,8 @@ export const INITIAL_TOURS: Tour[] = [
     ],
     accommodationDetails:
       '3 nights in authentic heated Kyrgyz felt yurts with shepherd families (warm stove, thick mattresses, clean blankets, western outdoor toilets).',
-    transportDetails: 'Private air-conditioned transfer Bishkek–Kyzart–Bishkek + 1 well-trained Kyrgyz mountain horse per rider with saddlebags and riding helmets.',
+    transportDetails:
+      'Private air-conditioned transfer Bishkek–Kyzart–Bishkek + 1 well-trained Kyrgyz mountain horse per rider with saddlebags and riding helmets.',
     inclusions: [
       'Round-trip private transfer from Bishkek',
       'Individual horse, saddle, saddlebags & riding helmet for 4 days',
@@ -611,7 +621,7 @@ export const INITIAL_TOURS: Tour[] = [
     ],
     exclusions: ['Personal travel insurance', 'Tips to horsemen'],
     status: 'published',
-    ratingAvg: 4.9,
+    ratingAvg: 5.0,
     reviewsCount: 1,
     createdAt: '2025-05-01T10:00:00Z',
     priceVerifiedAt: '2026-11-02T09:00:00Z',
@@ -620,7 +630,8 @@ export const INITIAL_TOURS: Tour[] = [
     id: 'tour-5',
     organizerId: 'org-3',
     slug: 'pamir-lenin-peak-tulpar-kul-sary-chelek-8-days',
-    title: '8-Day Southern Odyssey: Sary-Chelek Biosphere, Arslanbob & Lenin Peak Basecamp (3,600m)',
+    title:
+      '8-Day Southern Odyssey: Sary-Chelek Biosphere, Arslanbob & Lenin Peak Basecamp (3,600m)',
     subtitle:
       'Explore the dramatic south of Kyrgyzstan: Suusamyr Valley, Sary-Chelek’s 7 alpine lakes, Arslanbob ancient walnut forest, Osh 3,000-year bazaar, and Tulpar-Kul beneath 7,134m Lenin Peak.',
     regions: ['pamir-osh', 'sary-chelek'],
@@ -633,11 +644,12 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 890,
     depositPercent: 20,
     freeCancellationDays: 15,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/pamir-lenin-peak.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=900&q=80',
+      '/images/pamir-lenin-peak.jpg',
+      '/images/sary-chelek-lake.jpg',
+      '/images/kel-suu-canyon.jpg',
+      '/images/hero-song-kul.jpg',
     ],
     routeSummary:
       'Bishkek → Too-Ashu Pass → Toktogul → Sary-Chelek UNESCO Lakes → Arslanbob → Uzgen → Osh → Tulpar-Kul & Lenin Peak Basecamp (4,130m Travelers Pass) → Osh',
@@ -695,7 +707,8 @@ export const INITIAL_TOURS: Tour[] = [
         drivingHours: '4.5h scenic Pamir highway',
         maxAltitudeM: 3615,
         meals: ['B', 'L', 'D'],
-        accommodation: 'Premium Heated Yurt Complex at Tulpar-Kul Lake (3,500m, Hot Shower & Dining Yurt)',
+        accommodation:
+          'Premium Heated Yurt Complex at Tulpar-Kul Lake (3,500m, Hot Shower & Dining Yurt)',
       },
       {
         dayNumber: 6,
@@ -733,7 +746,8 @@ export const INITIAL_TOURS: Tour[] = [
     ],
     accommodationDetails:
       '5 nights in comfortable 3–4* hotels & en-suite guesthouses (Toktogul, Arkyt, Arslanbob, Osh) + 2 nights at our heated Lenin Peak Yurt Basecamp at Tulpar-Kul with hot showers.',
-    transportDetails: 'Toyota Land Cruiser Prado / Hilux 4WD fleet throughout the entire 8-day route.',
+    transportDetails:
+      'Toyota Land Cruiser Prado / Hilux 4WD fleet throughout the entire 8-day route.',
     inclusions: [
       '8 days 4WD transport, fuel & professional driver-guide',
       'All 7 nights accommodation & meals (7B, 7L, 7D)',
@@ -745,7 +759,7 @@ export const INITIAL_TOURS: Tour[] = [
       'Personal travel insurance',
     ],
     status: 'published',
-    ratingAvg: 4.9,
+    ratingAvg: 4.95,
     reviewsCount: 2,
     createdAt: '2025-05-20T10:00:00Z',
     priceVerifiedAt: '2026-11-03T11:00:00Z',
@@ -767,12 +781,14 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 85,
     depositPercent: 20,
     freeCancellationDays: 1,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80',
+    heroImageUrl: '/images/ala-archa-gorge.jpg',
     galleryUrls: [
-      'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80',
+      '/images/ala-archa-gorge.jpg',
+      '/images/chon-kemin-jeep.jpg',
+      '/images/eagle-hunter-yurt.jpg',
     ],
-    routeSummary: 'Bishkek → Ala-Archa Alpine National Park (2,200m–2,650m) → Traditional Kyrgyz Lunch → Burana Tower → Bishkek',
+    routeSummary:
+      'Bishkek → Ala-Archa Alpine National Park (2,200m–2,650m) → Traditional Kyrgyz Lunch → Burana Tower → Bishkek',
     itineraryDays: [
       {
         dayNumber: 1,
@@ -808,7 +824,7 @@ export const INITIAL_TOURS: Tour[] = [
     slug: 'chon-kemin-konorchek-canyons-3-day-horse-rafting',
     title: '3-Day Chon-Kemin Valley Horse Riding, Chu River Rafting & Konorchek Red Canyons',
     subtitle:
-      'Weekend active getaway from Bishkek combining dry-canyon hiking in Konorchek, Panorama horseback riding in Chon-Kemin, and Class III rafting.',
+      'Weekend active getaway from Bishkek combining dry-canyon hiking in Konorchek, panorama horseback riding in Chon-Kemin, and Class III rafting.',
     regions: ['issyk-kul', 'ala-archa'],
     activityTypes: ['horseback', 'jeep-4wd'],
     durationDays: 3,
@@ -819,17 +835,15 @@ export const INITIAL_TOURS: Tour[] = [
     basePriceUsd: 310,
     depositPercent: 20,
     freeCancellationDays: 7,
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80',
-    galleryUrls: [
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80',
-    ],
+    heroImageUrl: '/images/chon-kemin-jeep.jpg',
+    galleryUrls: ['/images/chon-kemin-jeep.jpg', '/images/horseback-song-kul.jpg'],
     routeSummary: 'Bishkek → Konorchek Canyons → Chon-Kemin National Park → Chu River → Bishkek',
     itineraryDays: [
       {
         dayNumber: 1,
         title: 'Bishkek → Konorchek Red Canyons Hike → Chon-Kemin Valley',
-        description: 'Walk through the narrow dry basalt labyrinth into the red sandstone columns of Konorchek, then continue to Chon-Kemin.',
+        description:
+          'Walk through the narrow dry basalt labyrinth into the red sandstone columns of Konorchek, then continue to Chon-Kemin.',
         distanceKm: 160,
         drivingHours: '2.5h drive + 2.5h canyon walk',
         maxAltitudeM: 1750,
@@ -839,7 +853,8 @@ export const INITIAL_TOURS: Tour[] = [
       {
         dayNumber: 2,
         title: 'Horseback Riding in Chon-Kemin Fir Forests & Traditional Games',
-        description: 'Full day exploring the mountain pastures of Chon-Kemin on horseback with a picnic lunch.',
+        description:
+          'Full day exploring the mountain pastures of Chon-Kemin on horseback with a picnic lunch.',
         distanceKm: 15,
         drivingHours: '4h horseback',
         maxAltitudeM: 2300,
@@ -849,7 +864,8 @@ export const INITIAL_TOURS: Tour[] = [
       {
         dayNumber: 3,
         title: 'Chu River Rafting → Return to Bishkek',
-        description: 'Optional Class II–III guided rafting on the Chu River and return to Bishkek by 16:30.',
+        description:
+          'Optional Class II–III guided rafting on the Chu River and return to Bishkek by 16:30.',
         distanceKm: 150,
         drivingHours: '2.5h drive',
         maxAltitudeM: 1500,
@@ -857,7 +873,8 @@ export const INITIAL_TOURS: Tour[] = [
         accommodation: 'Drop-off in Bishkek',
       },
     ],
-    accommodationDetails: '2 nights in a comfortable eco-guesthouse with private bathrooms in Chon-Kemin.',
+    accommodationDetails:
+      '2 nights in a comfortable eco-guesthouse with private bathrooms in Chon-Kemin.',
     transportDetails: '4WD SUV / Minibus.',
     inclusions: ['Transport, 2 nights guesthouse, all meals, horse rental, rafting gear & guide'],
     exclusions: ['Personal expenses'],
@@ -954,6 +971,22 @@ export const INITIAL_DEPARTURES: TourDeparture[] = [
 
   // Tour 2 Departures (5-Day Kel-Suu, basePrice $640)
   {
+    id: 'dep-200',
+    tourId: 'tour-2',
+    startDate: '2026-07-10',
+    endDate: '2026-07-14',
+    priceUsd: 640,
+    maxSeats: 10,
+    bookedSeats: 8,
+    heldSeats: 0,
+    seatsRemaining: 2,
+    isGuaranteed: true,
+    guideLanguages: ['EN', 'RU'],
+    cutoffHours: 48,
+    status: 'completed',
+    updatedAt: '2026-07-15T10:00:00Z',
+  },
+  {
     id: 'dep-201',
     tourId: 'tour-2',
     startDate: '2027-06-15',
@@ -987,6 +1020,22 @@ export const INITIAL_DEPARTURES: TourDeparture[] = [
   },
 
   // Tour 3 Departures (6-Day Ala-Kul Trek, basePrice $580)
+  {
+    id: 'dep-300',
+    tourId: 'tour-3',
+    startDate: '2026-08-12',
+    endDate: '2026-08-17',
+    priceUsd: 580,
+    maxSeats: 10,
+    bookedSeats: 8,
+    heldSeats: 0,
+    seatsRemaining: 2,
+    isGuaranteed: true,
+    guideLanguages: ['EN', 'FR'],
+    cutoffHours: 24,
+    status: 'completed',
+    updatedAt: '2026-08-19T12:00:00Z',
+  },
   {
     id: 'dep-301',
     tourId: 'tour-3',
@@ -1022,6 +1071,22 @@ export const INITIAL_DEPARTURES: TourDeparture[] = [
 
   // Tour 4 Departures (4-Day Song-Kul Horseback, basePrice $420)
   {
+    id: 'dep-400',
+    tourId: 'tour-4',
+    startDate: '2026-08-24',
+    endDate: '2026-08-27',
+    priceUsd: 420,
+    maxSeats: 8,
+    bookedSeats: 6,
+    heldSeats: 0,
+    seatsRemaining: 2,
+    isGuaranteed: true,
+    guideLanguages: ['EN', 'RU'],
+    cutoffHours: 24,
+    status: 'completed',
+    updatedAt: '2026-08-29T18:00:00Z',
+  },
+  {
     id: 'dep-401',
     tourId: 'tour-4',
     startDate: '2027-06-05',
@@ -1055,6 +1120,22 @@ export const INITIAL_DEPARTURES: TourDeparture[] = [
   },
 
   // Tour 5 Departures (8-Day Pamir & Sary-Chelek, basePrice $890)
+  {
+    id: 'dep-500',
+    tourId: 'tour-5',
+    startDate: '2026-07-18',
+    endDate: '2026-07-25',
+    priceUsd: 890,
+    maxSeats: 10,
+    bookedSeats: 7,
+    heldSeats: 0,
+    seatsRemaining: 3,
+    isGuaranteed: true,
+    guideLanguages: ['EN', 'RU'],
+    cutoffHours: 48,
+    status: 'completed',
+    updatedAt: '2026-07-28T10:00:00Z',
+  },
   {
     id: 'dep-501',
     tourId: 'tour-5',
@@ -1090,15 +1171,31 @@ export const INITIAL_DEPARTURES: TourDeparture[] = [
 
   // Tour 6 Departures (1-Day Ala-Archa & Burana, basePrice $85)
   {
+    id: 'dep-600',
+    tourId: 'tour-6',
+    startDate: '2026-09-12',
+    endDate: '2026-09-12',
+    priceUsd: 85,
+    maxSeats: 12,
+    bookedSeats: 8,
+    heldSeats: 0,
+    seatsRemaining: 4,
+    isGuaranteed: true,
+    guideLanguages: ['EN', 'RU'],
+    cutoffHours: 12,
+    status: 'completed',
+    updatedAt: '2026-09-13T10:00:00Z',
+  },
+  {
     id: 'dep-601',
     tourId: 'tour-6',
     startDate: '2027-05-02',
     endDate: '2027-05-02',
     priceUsd: 85,
     maxSeats: 12,
-    bookedSeats: 6,
+    bookedSeats: 9,
     heldSeats: 0,
-    seatsRemaining: 6,
+    seatsRemaining: 3,
     isGuaranteed: true,
     guideLanguages: ['EN', 'RU'],
     cutoffHours: 12,
@@ -1260,7 +1357,8 @@ export const INITIAL_BOOKINGS: Booking[] = [
       { fullName: 'Khalid Al-Mansoor', age: 33, nationality: 'UAE' },
       { fullName: 'Tariq Al-Mansoor', age: 30, nationality: 'UAE' },
     ],
-    dietaryNotes: 'Halal meals only (standard in Kyrgyzstan); passports uploaded for Kel-Suu border permit.',
+    dietaryNotes:
+      'Halal meals only (standard in Kyrgyzstan); passports uploaded for Kel-Suu border permit.',
     totalAmountUsd: 1280,
     depositAmountUsd: 256,
     balanceDueToOrganizerUsd: 1024,
@@ -1275,9 +1373,68 @@ export const INITIAL_BOOKINGS: Booking[] = [
     completedAt: null,
   },
   {
+    id: 'bk-1006',
+    bookingCode: 'KG-2026-7419',
+    departureId: 'dep-200',
+    tourId: 'tour-2',
+    organizerId: 'org-1',
+    leadTravelerName: 'Jonas Lindqvist',
+    leadEmail: 'jonas.lindqvist@example.com',
+    leadPhone: '+46 70 812 3340',
+    leadCountry: 'Sweden',
+    paxCount: 2,
+    participants: [
+      { fullName: 'Jonas Lindqvist', age: 37, nationality: 'Sweden' },
+      { fullName: 'Astrid Holm', age: 35, nationality: 'Sweden' },
+    ],
+    dietaryNotes: 'Extra warm sleeping bags appreciated.',
+    totalAmountUsd: 1280,
+    depositAmountUsd: 256,
+    balanceDueToOrganizerUsd: 1024,
+    platformCommissionUsd: 192,
+    paymentGateway: 'stripe',
+    paymentGatewayRef: 'STR-KG-74192',
+    reviewToken: 'REV-KG-7419',
+    hasReview: true,
+    status: 'completed',
+    createdAt: '2026-05-20T10:15:00Z',
+    confirmedAt: '2026-05-20T10:17:00Z',
+    completedAt: '2026-07-15T12:00:00Z',
+  },
+  {
+    id: 'bk-1007',
+    bookingCode: 'KG-2026-8105',
+    departureId: 'dep-600',
+    tourId: 'tour-6',
+    organizerId: 'org-1',
+    leadTravelerName: 'Mei-Ling Chen',
+    leadEmail: 'meiling.chen@example.com',
+    leadPhone: '+65 9123 8820',
+    leadCountry: 'Singapore',
+    paxCount: 3,
+    participants: [
+      { fullName: 'Mei-Ling Chen', age: 31, nationality: 'Singapore' },
+      { fullName: 'Wei Jie Tan', age: 33, nationality: 'Singapore' },
+      { fullName: 'Grace Lim', age: 30, nationality: 'Singapore' },
+    ],
+    dietaryNotes: 'Hotel pick-up at Hyatt Regency Bishkek.',
+    totalAmountUsd: 255,
+    depositAmountUsd: 51,
+    balanceDueToOrganizerUsd: 204,
+    platformCommissionUsd: 38.25,
+    paymentGateway: 'stripe',
+    paymentGatewayRef: 'STR-KG-81053',
+    reviewToken: 'REV-KG-8105',
+    hasReview: true,
+    status: 'completed',
+    createdAt: '2026-08-29T09:00:00Z',
+    confirmedAt: '2026-08-29T09:01:00Z',
+    completedAt: '2026-09-13T10:00:00Z',
+  },
+  {
     id: 'bk-2001',
     bookingCode: 'KG-2026-7710',
-    departureId: 'dep-301',
+    departureId: 'dep-300',
     tourId: 'tour-3',
     organizerId: 'org-2',
     leadTravelerName: 'Claire Dubois',
@@ -1302,6 +1459,35 @@ export const INITIAL_BOOKINGS: Booking[] = [
     status: 'completed',
     createdAt: '2026-07-01T10:00:00Z',
     confirmedAt: '2026-07-01T10:02:00Z',
+    completedAt: '2026-08-19T12:00:00Z',
+  },
+  {
+    id: 'bk-2004',
+    bookingCode: 'KG-2026-7788',
+    departureId: 'dep-300',
+    tourId: 'tour-3',
+    organizerId: 'org-2',
+    leadTravelerName: 'David Miller',
+    leadEmail: 'david.miller@example.com',
+    leadPhone: '+1 303 555 0149',
+    leadCountry: 'United States',
+    paxCount: 2,
+    participants: [
+      { fullName: 'David Miller', age: 40, nationality: 'USA' },
+      { fullName: 'Emily Carter', age: 37, nationality: 'USA' },
+    ],
+    dietaryNotes: 'No nut allergies.',
+    totalAmountUsd: 1160,
+    depositAmountUsd: 232,
+    balanceDueToOrganizerUsd: 928,
+    platformCommissionUsd: 174,
+    paymentGateway: 'stripe',
+    paymentGatewayRef: 'STR-KG-77884',
+    reviewToken: 'REV-KG-7788',
+    hasReview: true,
+    status: 'completed',
+    createdAt: '2026-07-05T16:10:00Z',
+    confirmedAt: '2026-07-05T16:11:00Z',
     completedAt: '2026-08-19T12:00:00Z',
   },
   {
@@ -1337,8 +1523,8 @@ export const INITIAL_BOOKINGS: Booking[] = [
   },
   {
     id: 'bk-2003',
-    bookingCode: 'KG-2027-1219',
-    departureId: 'dep-401',
+    bookingCode: 'KG-2026-7919',
+    departureId: 'dep-400',
     tourId: 'tour-4',
     organizerId: 'org-2',
     leadTravelerName: 'Aibek Toktogulov',
@@ -1357,7 +1543,7 @@ export const INITIAL_BOOKINGS: Booking[] = [
     platformCommissionUsd: 126,
     paymentGateway: 'mbank_qr',
     paymentGatewayRef: 'MBK-2026-44102',
-    reviewToken: 'REV-KG-1219',
+    reviewToken: 'REV-KG-7919',
     hasReview: true,
     status: 'completed',
     createdAt: '2026-08-10T14:00:00Z',
@@ -1367,7 +1553,7 @@ export const INITIAL_BOOKINGS: Booking[] = [
   {
     id: 'bk-3001',
     bookingCode: 'KG-2026-6502',
-    departureId: 'dep-501',
+    departureId: 'dep-500',
     tourId: 'tour-5',
     organizerId: 'org-3',
     leadTravelerName: 'Thomas Vance',
@@ -1391,6 +1577,35 @@ export const INITIAL_BOOKINGS: Booking[] = [
     status: 'completed',
     createdAt: '2026-06-15T19:00:00Z',
     confirmedAt: '2026-06-15T19:01:00Z',
+    completedAt: '2026-07-28T10:00:00Z',
+  },
+  {
+    id: 'bk-3003',
+    bookingCode: 'KG-2026-6590',
+    departureId: 'dep-500',
+    tourId: 'tour-5',
+    organizerId: 'org-3',
+    leadTravelerName: 'Sophie van Dijk',
+    leadEmail: 'sophie.vandijk@example.com',
+    leadPhone: '+31 6 4412 8890',
+    leadCountry: 'Netherlands',
+    paxCount: 2,
+    participants: [
+      { fullName: 'Sophie van Dijk', age: 34, nationality: 'Netherlands' },
+      { fullName: 'Bram de Vries', age: 36, nationality: 'Netherlands' },
+    ],
+    dietaryNotes: 'Vegetarian options when possible.',
+    totalAmountUsd: 1780,
+    depositAmountUsd: 356,
+    balanceDueToOrganizerUsd: 1424,
+    platformCommissionUsd: 320.4,
+    paymentGateway: 'freedom_pay',
+    paymentGatewayRef: 'FP-KG-65902',
+    reviewToken: 'REV-KG-6590',
+    hasReview: true,
+    status: 'completed',
+    createdAt: '2026-06-18T11:30:00Z',
+    confirmedAt: '2026-06-18T11:32:00Z',
     completedAt: '2026-07-28T10:00:00Z',
   },
   {
@@ -1439,11 +1654,8 @@ export const INITIAL_REVIEWS: Review[] = [
     ratingAccommodation: 5,
     ratingTransport: 5,
     comment:
-      'Booking directly with Tien Shan Nomads at their official $750 price without any OTA markup was fantastic. We paid the $300 deposit online for 2 people and paid the remaining $1,200 to Azamat in Bishkek. The heated yurt camp at Song-Kul even had hot showers, and the 4x4 drive into Altyn-Arashan was unforgettable!',
-    photos: [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
-      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80',
-    ],
+      'Booking directly with Tien Shan Nomads at their official $750 price without any agency markup was fantastic. We paid the $300 deposit online for 2 people and paid the remaining $1,200 to Azamat in Bishkek. The heated yurt camp at Song-Kul even had hot showers, and the 4x4 drive into Altyn-Arashan was unforgettable!',
+    photos: ['/images/hero-song-kul.jpg', '/images/issyk-kul-skazka.jpg'],
     isVerifiedBooker: true,
     organizerReply:
       'Chon rahmat, Lukas and Hannah! It was a pleasure hosting you across Song-Kul and Karakol. Come back for Kel-Suu next summer!',
@@ -1464,14 +1676,53 @@ export const INITIAL_REVIEWS: Review[] = [
     ratingTransport: 5,
     comment:
       'Ездили всей семьей (3 человека). Очень понравилось, что на сайте сразу видно реального организатора «Tien Shan Nomads», их лицензию и прямую цену без накрутки! Предоплата 20% прошла моментально, гид Азамат встретил в Бишкеке на отличном Land Cruiser. Каньон Сказка, охота с беркутом и озеро Сон-Куль — просто космос.',
-    photos: [
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80',
-    ],
+    photos: ['/images/eagle-hunter-yurt.jpg'],
     isVerifiedBooker: true,
     organizerReply:
       'Елена, Дмитрий, София, огромное спасибо за тёплый отзыв! Очень рады, что маршрут Золотого Кольца Кыргызстана оставил такие яркие впечатления!',
     repliedAt: '2026-06-25T09:00:00Z',
     createdAt: '2026-06-24T18:10:00Z',
+  },
+  {
+    id: 'rev-6',
+    bookingId: 'bk-1006',
+    tourId: 'tour-2',
+    organizerId: 'org-1',
+    authorName: 'Jonas Lindqvist',
+    authorCountry: 'Sweden',
+    tripDate: '2026-07-10',
+    ratingOverall: 5,
+    ratingGuide: 5,
+    ratingAccommodation: 4,
+    ratingTransport: 5,
+    comment:
+      'Kel-Suu Lake is honestly one of the wildest places I have ever stood on Earth. Tien Shan Nomads handled our border zone permits effortlessly, our Land Cruiser conquered the river crossings with zero drama, and taking the boat deep inside the emerald limestone gorge left us speechless.',
+    photos: ['/images/kel-suu-canyon.jpg'],
+    isVerifiedBooker: true,
+    organizerReply:
+      'Thank you Jonas and Astrid! The Aksai plateau is truly magical in July. Glad the heated yurts kept you cozy at 3,300m!',
+    repliedAt: '2026-07-18T09:00:00Z',
+    createdAt: '2026-07-17T14:00:00Z',
+  },
+  {
+    id: 'rev-7',
+    bookingId: 'bk-1007',
+    tourId: 'tour-6',
+    organizerId: 'org-1',
+    authorName: 'Mei-Ling Chen',
+    authorCountry: 'Singapore',
+    tripDate: '2026-09-12',
+    ratingOverall: 5,
+    ratingGuide: 5,
+    ratingAccommodation: 5,
+    ratingTransport: 5,
+    comment:
+      'Perfect day excursion from Bishkek! Aigerim picked us up right on time from Hyatt, guided us up the spruce valley in Ala-Archa to see the glaciers, and the freshly grilled trout lunch on the way to Burana Tower was delicious. Exact same $85 price as booking on their site.',
+    photos: ['/images/ala-archa-gorge.jpg'],
+    isVerifiedBooker: true,
+    organizerReply: null,
+    repliedAt: null,
+    createdAt: '2026-09-15T11:20:00Z',
   },
   {
     id: 'rev-3',
@@ -1487,14 +1738,32 @@ export const INITIAL_REVIEWS: Review[] = [
     ratingTransport: 5,
     comment:
       'Crossing Ala-Kul Pass at 3,900m with Timur and the Karakol Alpine Club team was the highlight of our trip to Central Asia. The Salewa tents and -10°C sleeping bags kept us super warm at Sirota Camp, and soaking in the Altyn-Arashan hot springs right after descending the pass felt like paradise.',
-    photos: [
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80',
-    ],
+    photos: ['/images/ala-kul-karakol.jpg'],
     isVerifiedBooker: true,
     organizerReply:
       'Merci beaucoup Claire, Antoine & Camille! Your group had amazing pace over Ala-Kul Pass. Hope to see you in Karakol for winter freeride!',
     repliedAt: '2026-08-21T11:00:00Z',
     createdAt: '2026-08-20T16:40:00Z',
+  },
+  {
+    id: 'rev-8',
+    bookingId: 'bk-2004',
+    tourId: 'tour-3',
+    organizerId: 'org-2',
+    authorName: 'David Miller',
+    authorCountry: 'United States',
+    tripDate: '2026-08-12',
+    ratingOverall: 5,
+    ratingGuide: 5,
+    ratingAccommodation: 4,
+    ratingTransport: 5,
+    comment:
+      'Proper alpine guiding from a real Karakol outfitter. Daniyar paced the 3,900m scree ascent carefully for everyone in our group, camp food was hearty and hot every evening, and the GAZ-66 descent down Altyn-Arashan canyon was an adventure in itself.',
+    photos: [],
+    isVerifiedBooker: true,
+    organizerReply: null,
+    repliedAt: null,
+    createdAt: '2026-08-22T09:15:00Z',
   },
   {
     id: 'rev-4',
@@ -1510,7 +1779,7 @@ export const INITIAL_REVIEWS: Review[] = [
     ratingTransport: 5,
     comment:
       'Очень удобно забронировали конный тур на Сон-Куль через MBANK QR по прямой цене организатора. Лошади спокойные, ухоженные, юрты тёплые с печкой. Отличный сервис!',
-    photos: [],
+    photos: ['/images/horseback-song-kul.jpg'],
     isVerifiedBooker: true,
     organizerReply: null,
     repliedAt: null,
@@ -1530,14 +1799,32 @@ export const INITIAL_REVIEWS: Review[] = [
     ratingTransport: 5,
     comment:
       'Southern Kyrgyzstan is criminally underrated! Sary-Chelek Lake was pristine, Osh bazaar was vibrant, and waking up in our heated yurt at Tulpar-Kul looking straight at 7,134m Lenin Peak took our breath away. Bakytbek is a world-class guide.',
-    photos: [
-      'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=600&q=80',
-    ],
+    photos: ['/images/pamir-lenin-peak.jpg', '/images/sary-chelek-lake.jpg'],
     isVerifiedBooker: true,
     organizerReply:
       'Thank you so much Thomas and Rachel! Hosting you in Osh and at our Lenin Peak basecamp was wonderful.',
     repliedAt: '2026-07-30T08:30:00Z',
     createdAt: '2026-07-29T15:20:00Z',
+  },
+  {
+    id: 'rev-9',
+    bookingId: 'bk-3003',
+    tourId: 'tour-5',
+    organizerId: 'org-3',
+    authorName: 'Sophie van Dijk',
+    authorCountry: 'Netherlands',
+    tripDate: '2026-07-18',
+    ratingOverall: 5,
+    ratingGuide: 5,
+    ratingAccommodation: 5,
+    ratingTransport: 5,
+    comment:
+      'From the walnut forests of Arslanbob to hiking Travelers Pass at 4,130m facing Lenin Peak glacier, every single day felt like a National Geographic documentary. Knowing we paid the exact direct price to a local Osh operator made it even better.',
+    photos: ['/images/sary-chelek-lake.jpg'],
+    isVerifiedBooker: true,
+    organizerReply: null,
+    repliedAt: null,
+    createdAt: '2026-08-01T10:15:00Z',
   },
 ];
 
@@ -1550,9 +1837,9 @@ export const INITIAL_PRICE_CLAIMS: PriceMatchClaim[] = [
     touristEmail: 'stefan.novak@example.com',
     competitorUrl: 'https://tienshannomads.kg/kel-suu-early-bird',
     claimedPriceUsd: 620,
-    notes: 'Saw an early-bird June promo on the organizer Instagram page for $620 instead of $640.',
+    notes:
+      'Saw an early-bird June promo on the organizer Instagram page for $620 instead of $640.',
     status: 'open',
     createdAt: '2026-11-11T18:30:00Z',
   },
 ];
-

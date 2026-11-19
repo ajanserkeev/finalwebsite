@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   Organizer,
   Tour,
@@ -15,6 +15,7 @@ import {
   ComfortLevel,
   PaymentGateway,
   BookingParticipant,
+  REGION_META,
 } from '@/types/marketplace';
 import {
   INITIAL_ORGANIZERS,
@@ -39,6 +40,7 @@ interface CreateBookingInput {
 
 interface SubmitReviewInput {
   tokenOrCode: string;
+  expectedTourId?: string;
   ratingOverall: 1 | 2 | 3 | 4 | 5;
   ratingGuide: 1 | 2 | 3 | 4 | 5;
   ratingAccommodation: 1 | 2 | 3 | 4 | 5;
@@ -61,7 +63,7 @@ interface CreateTourInput {
   basePriceUsd: number;
   depositPercent: number;
   freeCancellationDays: number;
-  heroImageUrl: string;
+  heroImageUrl?: string;
   routeSummary: string;
   accommodationDetails: string;
   transportDetails: string;
@@ -80,6 +82,12 @@ interface AddDepartureInput {
   cutoffHours: number;
 }
 
+export interface ToastMessage {
+  id: string;
+  type: 'success' | 'info' | 'error';
+  text: string;
+}
+
 interface MarketplaceContextType {
   organizers: Organizer[];
   tours: Tour[];
@@ -91,17 +99,32 @@ interface MarketplaceContextType {
   setCurrency: (c: CurrencyCode) => void;
   activePartnerId: string;
   setActivePartnerId: (id: string) => void;
+  savedTourIds: string[];
+  toggleSavedTour: (tourId: string) => void;
+  myBookingIds: string[];
+  wishlistOpen: boolean;
+  setWishlistOpen: (open: boolean) => void;
+  tripsOpen: boolean;
+  setTripsOpen: (open: boolean) => void;
+  toast: ToastMessage | null;
+  showToast: (text: string, type?: ToastMessage['type']) => void;
+  dismissToast: () => void;
   createBooking: (input: CreateBookingInput) => { ok: boolean; error?: string; booking?: Booking };
   adjustDepartureSeats: (
     departureId: string,
     newMaxSeats: number,
     isGuaranteed?: boolean
   ) => { ok: boolean; error?: string };
-  addDeparture: (input: AddDepartureInput) => { ok: boolean; departure?: TourDeparture };
+  addDeparture: (input: AddDepartureInput) => { ok: boolean; error?: string; departure?: TourDeparture };
   createTour: (input: CreateTourInput) => { ok: boolean; tour?: Tour };
   markBookingCompleted: (bookingId: string) => void;
   refundBooking: (bookingId: string) => { ok: boolean; message: string };
-  submitVerifiedReview: (input: SubmitReviewInput) => { ok: boolean; error?: string; review?: Review };
+  submitVerifiedReview: (input: SubmitReviewInput) => {
+    ok: boolean;
+    error?: string;
+    review?: Review;
+    redirectSlug?: string;
+  };
   replyToReview: (reviewId: string, replyText: string) => void;
   verifyOrganizer: (
     organizerId: string,
@@ -119,7 +142,9 @@ interface MarketplaceContextType {
   resetDemoData: () => void;
 }
 
-const STORAGE_KEY = 'kyrgyz_tours_marketplace_v1';
+const STORAGE_KEY = 'kyrgyz_tours_marketplace_v2';
+const SAVED_KEY = 'kyrgyz_tours_wishlist_v2';
+const MY_BOOKINGS_KEY = 'kyrgyz_tours_my_bookings_v2';
 
 const MarketplaceContext = createContext<MarketplaceContextType | undefined>(undefined);
 
@@ -132,7 +157,25 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
   const [priceClaims, setPriceClaims] = useState<PriceMatchClaim[]>(INITIAL_PRICE_CLAIMS);
   const [currency, setCurrencyState] = useState<CurrencyCode>('USD');
   const [activePartnerId, setActivePartnerId] = useState<string>('org-1');
+  const [savedTourIds, setSavedTourIds] = useState<string[]>(['tour-1', 'tour-3']);
+  const [myBookingIds, setMyBookingIds] = useState<string[]>(['bk-1003', 'bk-1004']);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [tripsOpen, setTripsOpen] = useState(false);
+  const [toast, setToast] = useState<ToastMessage | null>(null);
   const [hydrated, setHydrated] = useState(false);
+
+  const showToast = useCallback((text: string, type: ToastMessage['type'] = 'success') => {
+    const id = `t-${Date.now()}`;
+    setToast({ id, type, text });
+  }, []);
+
+  const dismissToast = useCallback(() => setToast(null), []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 4200);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   useEffect(() => {
     try {
@@ -149,6 +192,16 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
         if (parsed.bookings) setBookings(parsed.bookings);
         if (parsed.reviews) setReviews(parsed.reviews);
         if (parsed.priceClaims) setPriceClaims(parsed.priceClaims);
+      }
+      const savedRaw = localStorage.getItem(SAVED_KEY);
+      if (savedRaw) {
+        const parsedSaved = JSON.parse(savedRaw);
+        if (Array.isArray(parsedSaved)) setSavedTourIds(parsedSaved);
+      }
+      const myBkRaw = localStorage.getItem(MY_BOOKINGS_KEY);
+      if (myBkRaw) {
+        const parsedMyBk = JSON.parse(myBkRaw);
+        if (Array.isArray(parsedMyBk)) setMyBookingIds(parsedMyBk);
       }
     } catch {
       // Ignore storage read errors
@@ -175,6 +228,24 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     }
   }, [organizers, tours, departures, bookings, reviews, priceClaims, hydrated]);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(SAVED_KEY, JSON.stringify(savedTourIds));
+    } catch {
+      // Ignore
+    }
+  }, [savedTourIds, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(MY_BOOKINGS_KEY, JSON.stringify(myBookingIds));
+    } catch {
+      // Ignore
+    }
+  }, [myBookingIds, hydrated]);
+
   const setCurrency = (c: CurrencyCode) => {
     setCurrencyState(c);
     try {
@@ -184,7 +255,15 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     }
   };
 
-  // R-003, R-004, R-005, R-006, R-009: Create Booking with Deposit Split & Quota Lock
+  const toggleSavedTour = (tourId: string) => {
+    setSavedTourIds((prev) => {
+      const exists = prev.includes(tourId);
+      const next = exists ? prev.filter((id) => id !== tourId) : [...prev, tourId];
+      showToast(exists ? 'Removed from Wishlist' : 'Saved to Wishlist', 'info');
+      return next;
+    });
+  };
+
   const createBooking = (input: CreateBookingInput) => {
     const dep = departures.find((d) => d.id === input.departureId);
     if (!dep) {
@@ -199,26 +278,23 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       return { ok: false, error: 'Tour organizer not found.' };
     }
 
-    // R-006: Check booking cutoff
     const startMs = new Date(dep.startDate + 'T08:00:00Z').getTime();
     const nowMs = Date.now();
     const hoursUntilStart = (startMs - nowMs) / (1000 * 60 * 60);
     if (hoursUntilStart < dep.cutoffHours || dep.status === 'closed' || dep.status === 'completed') {
       return {
         ok: false,
-        error: `Online booking closed: this departure locks ${dep.cutoffHours} hours before departure (Rule R-006).`,
+        error: `Online booking closed: this departure locks ${dep.cutoffHours} hours before departure.`,
       };
     }
 
-    // R-005: Check seat quota
     if (input.paxCount < 1 || input.paxCount > dep.seatsRemaining) {
       return {
         ok: false,
-        error: `Only ${dep.seatsRemaining} seat(s) remaining on this departure (Rule R-005).`,
+        error: `Only ${dep.seatsRemaining} seat(s) remaining on this departure.`,
       };
     }
 
-    // R-003: Direct-Price Deposit Split Calculation
     const totalAmountUsd = input.paxCount * dep.priceUsd;
     const depositAmountUsd = Math.round((totalAmountUsd * tour.depositPercent) / 100);
     const balanceDueToOrganizerUsd = totalAmountUsd - depositAmountUsd;
@@ -257,7 +333,6 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       completedAt: null,
     };
 
-    // Update departure seats & status (R-004, R-005)
     const newBooked = dep.bookedSeats + input.paxCount;
     const newRemaining = Math.max(0, dep.maxSeats - newBooked - dep.heldSeats);
     const newGuaranteed = dep.isGuaranteed || newBooked >= tour.minParticipants;
@@ -279,7 +354,6 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       )
     );
 
-    // R-009: Increment Organizer's Tours Sold (+1) and People Signed Up (+paxCount)
     setOrganizers((prev) =>
       prev.map((o) =>
         o.id === org.id
@@ -293,11 +367,12 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     );
 
     setBookings((prev) => [newBooking, ...prev]);
+    setMyBookingIds((prev) => [newBooking.id, ...prev]);
+    showToast(`Booking ${bookingCode} confirmed! Saved to My Trips.`, 'success');
 
     return { ok: true, booking: newBooking };
   };
 
-  // R-011: Operator Quota Floor Validation & 1-Click Seat Adjustment
   const adjustDepartureSeats = (
     departureId: string,
     newMaxSeats: number,
@@ -309,7 +384,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     if (newMaxSeats < dep.bookedSeats) {
       return {
         ok: false,
-        error: `Cannot reduce capacity to ${newMaxSeats}: ${dep.bookedSeats} seats are already booked by confirmed tourists (Rule R-011).`,
+        error: `Cannot reduce capacity to ${newMaxSeats}: ${dep.bookedSeats} seats are already booked by confirmed travelers.`,
       };
     }
 
@@ -345,6 +420,16 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
   };
 
   const addDeparture = (input: AddDepartureInput) => {
+    if (!input.tourId) {
+      return { ok: false, error: 'Please select a tour program first.' };
+    }
+    if (!input.startDate || !input.endDate || input.endDate < input.startDate) {
+      return { ok: false, error: 'End date must be on or after the start date.' };
+    }
+    if (input.priceUsd < 10 || input.maxSeats < 1) {
+      return { ok: false, error: 'Please enter a valid price and seat capacity.' };
+    }
+
     const newDep: TourDeparture = {
       id: `dep-${Date.now()}`,
       tourId: input.tourId,
@@ -362,10 +447,10 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       updatedAt: new Date().toISOString(),
     };
     setDepartures((prev) => [...prev, newDep]);
+    showToast('New departure date published to live calendar.', 'success');
     return { ok: true, departure: newDep };
   };
 
-  // F-010, R-013: Operator creates tour -> queued as pending_review until Admin approves
   const createTour = (input: CreateTourInput) => {
     const slug =
       input.title
@@ -374,6 +459,10 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
         .replace(/(^-|-$)/g, '') +
       '-' +
       Math.floor(100 + Math.random() * 900);
+
+    const fallbackImage =
+      REGION_META[input.regions[0]]?.imageUrl || '/images/hero-song-kul.jpg';
+    const heroImg = input.heroImageUrl || fallbackImage;
 
     const newTour: Tour = {
       id: `tour-${Date.now()}`,
@@ -391,18 +480,13 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       basePriceUsd: input.basePriceUsd,
       depositPercent: input.depositPercent,
       freeCancellationDays: input.freeCancellationDays,
-      heroImageUrl:
-        input.heroImageUrl ||
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
-      galleryUrls: [
-        input.heroImageUrl ||
-          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
-      ],
+      heroImageUrl: heroImg,
+      galleryUrls: [heroImg, '/images/issyk-kul-skazka.jpg', '/images/eagle-hunter-yurt.jpg'],
       routeSummary: input.routeSummary,
       itineraryDays: [
         {
           dayNumber: 1,
-          title: 'Day 1: Departure from Bishkek & Mountain Ascent',
+          title: 'Day 1: Departure & Scenic Mountain Route',
           description: input.subtitle,
           distanceKm: 180,
           drivingHours: '3.5h 4WD drive',
@@ -423,6 +507,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     };
 
     setTours((prev) => [newTour, ...prev]);
+    showToast('Tour submitted for direct-price verification in Admin Panel.', 'info');
     return { ok: true, tour: newTour };
   };
 
@@ -434,9 +519,9 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
           : b
       )
     );
+    showToast('Trip marked completed — traveler review token unlocked.', 'success');
   };
 
-  // R-010: Free Cancellation Cutoff & Seat Restoration
   const refundBooking = (bookingId: string) => {
     const bk = bookings.find((b) => b.id === bookingId);
     if (!bk) return { ok: false, message: 'Booking not found.' };
@@ -461,7 +546,14 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
                 ...d,
                 bookedSeats: nextBooked,
                 seatsRemaining: nextRemaining,
-                status: nextRemaining > 0 ? (d.isGuaranteed ? 'guaranteed' : 'open') : 'sold_out',
+                status:
+                  d.status === 'completed'
+                    ? 'completed'
+                    : nextRemaining > 0
+                    ? d.isGuaranteed
+                      ? 'guaranteed'
+                      : 'open'
+                    : 'sold_out',
                 updatedAt: new Date().toISOString(),
               }
             : d
@@ -481,15 +573,13 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       )
     );
 
-    return {
-      ok: true,
-      message: `Refunded $${bk.depositAmountUsd} deposit for booking ${bk.bookingCode} (${
-        tour?.freeCancellationDays ?? 15
-      }-day free cancellation policy) and restored ${bk.paxCount} seat(s) to inventory (Rule R-010).`,
-    };
+    const msg = `Refunded $${bk.depositAmountUsd} deposit for booking ${bk.bookingCode} (${
+      tour?.freeCancellationDays ?? 15
+    }-day free cancellation) and restored ${bk.paxCount} seat(s).`;
+    showToast(msg, 'info');
+    return { ok: true, message: msg };
   };
 
-  // R-007 & R-008: Verified-Booker-Only Review Gate & Dual Rating Aggregation
   const submitVerifiedReview = (input: SubmitReviewInput) => {
     const cleanToken = input.tokenOrCode.trim().toUpperCase();
     const bk = bookings.find(
@@ -502,14 +592,23 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       return {
         ok: false,
         error:
-          'Invalid Booking Reference or Review Token. Only real tourists with a verified booking can post a review (Rule R-007). Try demo token: REV-TEST-DEMO',
+          'Invalid booking reference or review token. Only travelers with a verified completed booking can post a review.',
+      };
+    }
+
+    if (input.expectedTourId && bk.tourId !== input.expectedTourId) {
+      const actualTour = tours.find((t) => t.id === bk.tourId);
+      return {
+        ok: false,
+        error: `This token belongs to "${actualTour?.title || 'another tour'}". Please submit your review on that tour's page.`,
+        redirectSlug: actualTour?.slug,
       };
     }
 
     if (bk.status !== 'completed') {
       return {
         ok: false,
-        error: `Booking ${bk.bookingCode} is currently "${bk.status}". Reviews can only be submitted after the tour is completed (Rule R-007). (Tip: you can mark it Completed in the Partner Portal!)`,
+        error: `Booking ${bk.bookingCode} is currently "${bk.status}". Reviews unlock after your trip finishes (or mark it Completed in the Partner Portal to preview).`,
       };
     }
 
@@ -547,7 +646,6 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       prev.map((b) => (b.id === bk.id ? { ...b, hasReview: true } : b))
     );
 
-    // R-008: Recalculate Tour ratingAvg & reviewsCount
     const tourReviews = nextReviews.filter((r) => r.tourId === bk.tourId);
     const tourAvg =
       tourReviews.reduce((acc, r) => acc + r.ratingOverall, 0) / tourReviews.length;
@@ -564,7 +662,6 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       )
     );
 
-    // R-008: Recalculate Organizer ratingAvg & reviewsCount
     const orgReviews = nextReviews.filter((r) => r.organizerId === bk.organizerId);
     const orgAvg =
       orgReviews.reduce((acc, r) => acc + r.ratingOverall, 0) / orgReviews.length;
@@ -581,6 +678,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       )
     );
 
+    showToast('Verified review published! Ratings updated.', 'success');
     return { ok: true, review: newReview };
   };
 
@@ -596,22 +694,23 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
           : r
       )
     );
+    showToast('Official organizer reply published.', 'success');
   };
 
-  // R-013: Admin KYC Verification & Commission Rate Setting
   const verifyOrganizer = (
     organizerId: string,
     isVerified: boolean,
     commissionPercent: number,
     verificationStatus: 'pending' | 'verified' | 'suspended'
   ) => {
+    const safeComm = Math.min(35, Math.max(5, Number(commissionPercent) || 15));
     setOrganizers((prev) =>
       prev.map((o) =>
         o.id === organizerId
           ? {
               ...o,
               isVerified,
-              commissionPercent,
+              commissionPercent: safeComm,
               verificationStatus,
               verifiedAt: isVerified ? new Date().toISOString() : o.verifiedAt,
             }
@@ -620,7 +719,6 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     );
   };
 
-  // R-002 & R-013: Admin Tour Moderation & Direct-Price Parity Approval
   const moderateTour = (tourId: string, status: 'published' | 'draft' | 'archived') => {
     setTours((prev) =>
       prev.map((t) =>
@@ -646,6 +744,7 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
       createdAt: new Date().toISOString(),
     };
     setPriceClaims((prev) => [newClaim, ...prev]);
+    showToast('Price-match claim submitted to our verification team.', 'success');
   };
 
   const resolvePriceMatchClaim = (
@@ -687,11 +786,16 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
     setBookings(INITIAL_BOOKINGS);
     setReviews(INITIAL_REVIEWS);
     setPriceClaims(INITIAL_PRICE_CLAIMS);
+    setSavedTourIds(['tour-1', 'tour-3']);
+    setMyBookingIds(['bk-1003', 'bk-1004']);
     try {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SAVED_KEY);
+      localStorage.removeItem(MY_BOOKINGS_KEY);
     } catch {
       // Ignore
     }
+    showToast('Demo data reset to initial state.', 'info');
   };
 
   return (
@@ -707,6 +811,16 @@ export function MarketplaceProvider({ children }: { children: React.ReactNode })
         setCurrency,
         activePartnerId,
         setActivePartnerId,
+        savedTourIds,
+        toggleSavedTour,
+        myBookingIds,
+        wishlistOpen,
+        setWishlistOpen,
+        tripsOpen,
+        setTripsOpen,
+        toast,
+        showToast,
+        dismissToast,
         createBooking,
         adjustDepartureSeats,
         addDeparture,
@@ -734,4 +848,3 @@ export function useMarketplace() {
   }
   return ctx;
 }
-

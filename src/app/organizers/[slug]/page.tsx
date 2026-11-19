@@ -11,11 +11,14 @@ import {
   Truck,
   Building2,
   Award,
+  ExternalLink,
+  Clock,
+  AlertTriangle,
 } from 'lucide-react';
 import { useMarketplace } from '@/context/MarketplaceContext';
+import { formatShortDate } from '@/types/marketplace';
 import { TourCard } from '@/components/TourCard';
 
-/** S-004: Public Tour Organizer Profile Page */
 export default function OrganizerProfilePage({
   params,
 }: {
@@ -29,13 +32,15 @@ export default function OrganizerProfilePage({
 
   if (!organizer) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-4">
-        <h1 className="text-2xl font-extrabold text-slate-900">Organizer Not Found</h1>
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
+        <h1 className="font-display text-2xl font-extrabold text-gray-900">
+          Organizer Not Found
+        </h1>
         <Link
-          href="/tours"
-          className="inline-block px-4 py-2 rounded-xl bg-teal-600 text-white text-xs font-bold"
+          href="/organizers"
+          className="inline-block px-6 py-2.5 rounded-full bg-[#008768] text-white text-sm font-bold"
         >
-          Browse All Tours
+          Browse Verified Organizers
         </Link>
       </div>
     );
@@ -44,81 +49,93 @@ export default function OrganizerProfilePage({
   const organizerTours = tours.filter(
     (t) => t.organizerId === organizer.id && t.status === 'published'
   );
-  const organizerReviews = reviews
-    .filter((r) => r.organizerId === organizer.id)
-    .filter((r) => selectedReviewTourId === 'all' || r.tourId === selectedReviewTourId);
+  const allOrgReviews = reviews.filter((r) => r.organizerId === organizer.id);
+  const filteredReviews = allOrgReviews.filter(
+    (r) => selectedReviewTourId === 'all' || r.tourId === selectedReviewTourId
+  );
 
   return (
-    <div className="space-y-10 pb-12">
-      {/* Organizer Cover & Hero Header */}
-      <section className="relative bg-slate-900 text-white">
-        <div className="h-56 sm:h-72 overflow-hidden opacity-45">
+    <div className="bg-white pb-12">
+      {/* Editorial Cover Banner */}
+      <section className="relative">
+        <div className="h-56 sm:h-72 overflow-hidden bg-gray-900 relative">
           <img
             src={organizer.coverUrl}
             alt={organizer.brandName}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-20 relative z-10 pb-8">
-          <div className="bg-white text-slate-900 rounded-2xl border border-slate-200 shadow-xl p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-20 relative z-10">
+          <div className="bg-white rounded-3xl border border-gray-200 shadow-xl p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
               <img
                 src={organizer.logoUrl}
                 alt={organizer.brandName}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-4 border-teal-500 shadow-md"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-4 border-white shadow-lg bg-white shrink-0"
               />
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-                    Verified Kyrgyz Tour Organizer
-                  </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
-                    <MapPin className="w-3.5 h-3.5 text-slate-500" />
-                    Base: {organizer.baseCity} · Est. {organizer.foundedYear}
+                  {organizer.isVerified && organizer.verificationStatus === 'verified' ? (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E6F5F0] text-[#006B52] text-xs font-bold">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#008768]" />
+                      Verified Kyrgyz Tour Organizer
+                    </span>
+                  ) : organizer.verificationStatus === 'pending' ? (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold">
+                      <Clock className="w-3.5 h-3.5" />
+                      KYC Verification Pending
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-bold">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      Account Suspended
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
+                    <MapPin className="w-3.5 h-3.5 text-gray-500" />
+                    {organizer.baseCity}, Kyrgyzstan · Est. {organizer.foundedYear}
                   </span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900">
                   {organizer.brandName}
                 </h1>
 
-                <div className="text-xs text-slate-500">
-                  <strong>Legal Entity:</strong> {organizer.legalName} ({organizer.registrationNumber})
+                <div className="text-xs text-gray-500">
+                  <strong className="text-gray-800">{organizer.legalName}</strong> ·{' '}
+                  {organizer.registrationNumber}
                 </div>
               </div>
             </div>
 
-            {/* Organizer Live Performance & Reputation Metrics */}
+            {/* Live Performance Metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto text-center">
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="text-lg font-extrabold text-slate-900 flex items-center justify-center gap-1">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  {organizer.ratingAvg.toFixed(2)}
+              <div className="p-3.5 rounded-2xl bg-[#F7F8F9] border border-gray-200">
+                <div className="text-lg font-display font-extrabold text-gray-900 flex items-center justify-center gap-1">
+                  <Star className="w-4 h-4 fill-[#008768] text-[#008768]" />
+                  {allOrgReviews.length > 0 ? organizer.ratingAvg.toFixed(1) : 'New'}
                 </div>
-                <div className="text-[11px] text-slate-500">Verified Rating</div>
+                <div className="text-[11px] text-gray-500">Rating</div>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="text-lg font-extrabold text-slate-900">
-                  {organizer.reviewsCount}
+              <div className="p-3.5 rounded-2xl bg-[#F7F8F9] border border-gray-200">
+                <div className="text-lg font-display font-extrabold text-gray-900">
+                  {allOrgReviews.length}
                 </div>
-                <div className="text-[11px] text-slate-500">Tourist Reviews</div>
+                <div className="text-[11px] text-gray-500">Reviews</div>
               </div>
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="text-lg font-extrabold text-slate-900">
+              <div className="p-3.5 rounded-2xl bg-[#F7F8F9] border border-gray-200">
+                <div className="text-lg font-display font-extrabold text-gray-900">
                   {organizer.toursSoldCount}
                 </div>
-                <div className="text-[11px] text-slate-500">Tours Sold</div>
+                <div className="text-[11px] text-gray-500">Tours Sold</div>
               </div>
-              <div className="p-3.5 rounded-xl bg-teal-50 border border-teal-200">
-                <div className="text-lg font-extrabold text-teal-700">
+              <div className="p-3.5 rounded-2xl bg-[#F0FAF6] border border-[#008768]/20">
+                <div className="text-lg font-display font-extrabold text-[#008768]">
                   {organizer.peopleSignedUpCount}
                 </div>
-                <div className="text-[11px] text-teal-800 font-semibold">
-                  People Signed Up
-                </div>
+                <div className="text-[11px] text-[#006B52] font-semibold">Travelers</div>
               </div>
             </div>
           </div>
@@ -126,46 +143,55 @@ export default function OrganizerProfilePage({
       </section>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
-        {/* About, Fleet & Guides */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 space-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-            <h2 className="font-extrabold text-lg text-slate-900">
+          <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-200 p-6 sm:p-7 space-y-5">
+            <h2 className="font-display font-extrabold text-xl text-gray-900">
               About {organizer.brandName}
             </h2>
-            <p className="text-sm text-slate-700 leading-relaxed">{organizer.bio}</p>
+            <p className="text-sm text-gray-700 leading-relaxed">{organizer.bio}</p>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 text-xs">
-              <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                <Truck className="w-4 h-4 text-teal-600" />
-                4WD Fleet & Camp Infrastructure
+            <div className="p-4 rounded-2xl bg-[#F7F8F9] border border-gray-200 space-y-1.5 text-xs">
+              <div className="font-bold text-gray-900 flex items-center gap-1.5">
+                <Truck className="w-4 h-4 text-[#008768]" />
+                4WD Fleet & Yurt Camp Infrastructure
               </div>
-              <p className="text-slate-600">{organizer.fleetSummary}</p>
+              <p className="text-gray-600 leading-relaxed">{organizer.fleetSummary}</p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs text-slate-600">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 text-xs text-gray-600">
               <div className="flex items-center gap-1.5">
-                <Globe className="w-4 h-4 text-teal-600" />
-                <strong>Languages spoken by guides:</strong> {organizer.languages.join(', ')}
+                <Globe className="w-4 h-4 text-[#008768]" />
+                <strong>Guide Languages:</strong> {organizer.languages.join(', ')}
               </div>
-              <div className="flex items-center gap-1.5 text-teal-700 font-semibold">
-                <ShieldCheck className="w-4 h-4" />
-                Signed 0% Markup Direct-Price Parity Agreement
-              </div>
+              <a
+                href={organizer.directSiteUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-[#008768] font-bold hover:underline"
+              >
+                Official Website ({organizer.directSiteUrl.replace('https://', '')})
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-[#F0FAF6] border border-[#008768]/20 text-xs text-[#004F32] font-semibold flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#008768] shrink-0" />
+              Signed Direct-Price Parity Agreement — 0% markup over booking direct.
             </div>
           </div>
 
-          {/* Lead Mountain Guides */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          {/* Lead Guides */}
+          <div className="bg-white rounded-3xl border border-gray-200 p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-extrabold text-lg text-slate-900">Lead Guides</h2>
+              <h2 className="font-display font-extrabold text-lg text-gray-900">Lead Guides</h2>
               <Link
                 href="/partner"
                 onClick={() => setActivePartnerId(organizer.id)}
-                className="text-xs font-semibold text-teal-700 hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-[#008768] hover:underline flex items-center gap-1"
               >
                 <Building2 className="w-3.5 h-3.5" />
-                Operator Portal
+                Partner Portal
               </Link>
             </div>
 
@@ -173,18 +199,18 @@ export default function OrganizerProfilePage({
               {organizer.guides.map((g, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3"
+                  className="p-3.5 rounded-2xl bg-[#F7F8F9] border border-gray-200/80 flex items-center gap-3.5"
                 >
                   <img
                     src={g.avatarUrl}
                     alt={g.name}
-                    className="w-12 h-12 rounded-xl object-cover"
+                    className="w-12 h-12 rounded-xl object-cover shrink-0"
                   />
                   <div className="text-xs">
-                    <div className="font-bold text-slate-900">{g.name}</div>
-                    <div className="text-slate-500">{g.role}</div>
-                    <div className="text-[11px] text-teal-700 font-medium mt-0.5">
-                      {g.experienceYears} yrs exp · {g.languages.join(', ')}
+                    <div className="font-bold text-gray-900">{g.name}</div>
+                    <div className="text-gray-500">{g.role}</div>
+                    <div className="text-[11px] text-[#006B52] font-semibold mt-0.5">
+                      {g.experienceYears} yrs experience · {g.languages.join(', ')}
                     </div>
                   </div>
                 </div>
@@ -193,115 +219,135 @@ export default function OrganizerProfilePage({
           </div>
         </div>
 
-        {/* All Active Direct-Price Tours by this Organizer */}
+        {/* Active Tours by this Organizer */}
         <section className="space-y-5">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#008768]">
               0% Markup Direct Programs
             </span>
-            <h2 className="text-2xl font-extrabold text-slate-900 mt-0.5">
-              Active Tours by {organizer.brandName} ({organizerTours.length})
+            <h2 className="font-display text-2xl font-extrabold text-gray-900 mt-0.5">
+              Experiences by {organizer.brandName} ({organizerTours.length})
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {organizerTours.map((tour) => {
-              const tourDeps = departures.filter((d) => d.tourId === tour.id);
-              return (
-                <TourCard
-                  key={tour.id}
-                  tour={tour}
-                  organizer={organizer}
-                  departures={tourDeps}
-                />
-              );
-            })}
-          </div>
+          {organizerTours.length === 0 ? (
+            <div className="p-10 rounded-3xl bg-[#F7F8F9] border border-gray-200 text-center text-sm text-gray-600">
+              This organizer has no published tours live yet.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {organizerTours.map((tour) => {
+                const tourDeps = departures.filter((d) => d.tourId === tour.id);
+                return (
+                  <TourCard
+                    key={tour.id}
+                    tour={tour}
+                    organizer={organizer}
+                    departures={tourDeps}
+                  />
+                );
+              })}
+            </div>
+          )}
         </section>
 
-        {/* All Verified Tourist Reviews for this Organizer */}
-        <section className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        {/* Verified Reviews Feed */}
+        <section className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#008768]">
                 <Award className="w-4 h-4" />
-                Aggregated Verified Reviews Across All Tours (Rule R-008)
+                Verified Bookings Only
               </div>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-0.5">
-                Reviews from Real Tourists Who Traveled with {organizer.brandName} (
-                {organizerReviews.length})
+              <h2 className="font-display text-xl sm:text-2xl font-extrabold text-gray-900 mt-0.5">
+                Traveler Reviews for {organizer.brandName} ({filteredReviews.length})
               </h2>
             </div>
 
             <select
               value={selectedReviewTourId}
               onChange={(e) => setSelectedReviewTourId(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-800"
+              className="px-4 py-2 rounded-full border border-gray-300 bg-white text-xs font-bold text-gray-800 cursor-pointer"
             >
-              <option value="all">All Tours ({organizer.reviewsCount} reviews)</option>
-              {organizerTours.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.title} ({t.reviewsCount})
-                </option>
-              ))}
+              <option value="all">All Tours ({allOrgReviews.length} reviews)</option>
+              {organizerTours.map((t) => {
+                const cnt = allOrgReviews.filter((r) => r.tourId === t.id).length;
+                return (
+                  <option key={t.id} value={t.id}>
+                    {t.title} ({cnt})
+                  </option>
+                );
+              })}
             </select>
           </div>
 
-          <div className="space-y-4">
-            {organizerReviews.map((rev) => {
-              const revTour = tours.find((t) => t.id === rev.tourId);
-              return (
-                <div
-                  key={rev.id}
-                  className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200 space-y-3"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <div className="font-bold text-sm text-slate-900">
-                        {rev.authorName}{' '}
-                        <span className="text-xs font-normal text-slate-500">
-                          ({rev.authorCountry})
-                        </span>
+          {filteredReviews.length === 0 ? (
+            <p className="text-sm text-gray-500">No verified reviews matching this filter yet.</p>
+          ) : (
+            <div className="space-y-5">
+              {filteredReviews.map((rev) => {
+                const revTour = tours.find((t) => t.id === rev.tourId);
+                return (
+                  <div
+                    key={rev.id}
+                    className="pb-5 border-b border-gray-100 last:border-b-0 space-y-3"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <div className="font-bold text-sm text-gray-900">
+                          {rev.authorName}{' '}
+                          <span className="font-normal text-gray-500">· {rev.authorCountry}</span>
+                        </div>
+                        <div className="text-xs font-medium text-[#006B52] flex flex-wrap items-center gap-1.5 mt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Verified Trip · {formatShortDate(rev.tripDate)}
+                          {revTour && (
+                            <Link
+                              href={`/tours/${revTour.slug}`}
+                              className="text-gray-700 underline hover:text-[#008768]"
+                            >
+                              {revTour.title}
+                            </Link>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-xs font-semibold text-emerald-700 flex items-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Verified Booking · Trip Date: {rev.tripDate}
-                        {revTour && (
-                          <Link
-                            href={`/tours/${revTour.slug}`}
-                            className="text-teal-700 underline ml-1"
-                          >
-                            ({revTour.title})
-                          </Link>
-                        )}
+
+                      <div className="flex items-center gap-1 text-xs font-bold bg-[#F0FAF6] px-3 py-1 rounded-full text-gray-900">
+                        <Star className="w-3.5 h-3.5 fill-[#008768] text-[#008768]" />
+                        {rev.ratingOverall}.0
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 text-xs font-bold bg-white px-2.5 py-1 rounded-lg border border-slate-200">
-                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      {rev.ratingOverall}.0 / 5.0
-                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{rev.comment}</p>
+
+                    {rev.photos && rev.photos.length > 0 && (
+                      <div className="flex gap-2">
+                        {rev.photos.map((photo, idx) => (
+                          <img
+                            key={idx}
+                            src={photo}
+                            alt="Verified traveler photo"
+                            className="w-20 h-16 rounded-xl object-cover border border-gray-200"
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {rev.organizerReply && (
+                      <div className="ml-4 pl-4 border-l-2 border-[#008768] bg-[#F7F8F9] p-3.5 rounded-r-xl text-xs">
+                        <div className="font-bold text-gray-900">
+                          Reply from {organizer.brandName}:
+                        </div>
+                        <p className="text-gray-600 mt-0.5">{rev.organizerReply}</p>
+                      </div>
+                    )}
                   </div>
-
-                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                    {rev.comment}
-                  </p>
-
-                  {rev.organizerReply && (
-                    <div className="ml-4 pl-4 border-l-2 border-teal-500 bg-white p-3 rounded-xl text-xs">
-                      <div className="font-bold text-teal-800">
-                        Reply from {organizer.brandName}:
-                      </div>
-                      <p className="text-slate-600 mt-0.5">{rev.organizerReply}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </section>
       </div>
     </div>
   );
 }
-

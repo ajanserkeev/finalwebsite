@@ -54,7 +54,6 @@ export interface GuideMember {
   avatarUrl: string;
 }
 
-/** E-001 Organizer (Tour Operator / Partner) */
 export interface Organizer {
   id: string;
   slug: string;
@@ -75,9 +74,7 @@ export interface Organizer {
   commissionPercent: number;
   ratingAvg: number;
   reviewsCount: number;
-  /** Real-time counter of confirmed/completed bookings (R-009) */
   toursSoldCount: number;
-  /** Real-time counter of total participants signed up across bookings (R-009) */
   peopleSignedUpCount: number;
   foundedYear: number;
   fleetSummary: string;
@@ -97,7 +94,6 @@ export interface ItineraryDay {
   accommodation: string;
 }
 
-/** E-002 Tour */
 export interface Tour {
   id: string;
   organizerId: string;
@@ -111,9 +107,7 @@ export interface Tour {
   comfortLevel: ComfortLevel;
   maxGroupSize: number;
   minParticipants: number;
-  /** Must match or beat organizer's direct price (R-002) */
   basePriceUsd: number;
-  /** Online reservation deposit percentage, e.g., 20% (R-003) */
   depositPercent: number;
   freeCancellationDays: number;
   heroImageUrl: string;
@@ -131,7 +125,6 @@ export interface Tour {
   priceVerifiedAt: string | null;
 }
 
-/** E-003 TourDeparture */
 export interface TourDeparture {
   id: string;
   tourId: string;
@@ -155,7 +148,6 @@ export interface BookingParticipant {
   nationality?: string;
 }
 
-/** E-004 Booking */
 export interface Booking {
   id: string;
   bookingCode: string;
@@ -183,7 +175,6 @@ export interface Booking {
   completedAt: string | null;
 }
 
-/** E-005 Verified Tourist Review */
 export interface Review {
   id: string;
   bookingId: string;
@@ -221,64 +212,64 @@ export const REGION_META: Record<
   KyrgyzstanRegion,
   { name: string; nameRu: string; tagline: string; imageUrl: string; altitude: string }
 > = {
-  'issyk-kul': {
-    name: 'Issyk-Kul & Canyons',
-    nameRu: 'Иссык-Куль и каньоны',
-    tagline: 'Skazka Fairy Tale Canyon, Barskoon Waterfalls & Alpine Beaches',
-    imageUrl: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80',
-    altitude: '1,607m',
-  },
   'song-kul': {
     name: 'Song-Kul Alpine Lake',
     nameRu: 'Озеро Сон-Куль',
     tagline: 'High-Altitude Nomadic Pastures, Felt Yurt Camps & Wild Horses',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80',
+    imageUrl: '/images/hero-song-kul.jpg',
     altitude: '3,016m',
+  },
+  'issyk-kul': {
+    name: 'Issyk-Kul & Skazka Canyon',
+    nameRu: 'Иссык-Куль и каньон Сказка',
+    tagline: 'Red Sandstone Fairy Tale Canyons, Eagle Hunters & Alpine Beaches',
+    imageUrl: '/images/issyk-kul-skazka.jpg',
+    altitude: '1,607m',
   },
   'kel-suu': {
     name: 'Kel-Suu & Naryn',
     nameRu: 'Кель-Суу и Нарын',
-    tagline: 'Dramatic Emerald Canyon Lake on the Remote Borderland',
-    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
+    tagline: 'Dramatic Emerald Canyon Lake & Tash-Rabat Stone Caravanserai',
+    imageUrl: '/images/kel-suu-canyon.jpg',
     altitude: '3,514m',
   },
   karakol: {
-    name: 'Karakol & Altyn-Arashan',
-    nameRu: 'Каракол и Алтын-Арашан',
-    tagline: 'Ala-Kul Glacier Lake, Hot Springs, Jeti-Oguz Red Rocks',
-    imageUrl: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
+    name: 'Karakol & Ala-Kul Lake',
+    nameRu: 'Каракол и озеро Ала-Куль',
+    tagline: 'Turquoise Glacier Lake, Altyn-Arashan Hot Springs & Jeti-Oguz',
+    imageUrl: '/images/ala-kul-karakol.jpg',
     altitude: '2,500–3,900m',
   },
   'ala-archa': {
     name: 'Ala-Archa & Bishkek',
     nameRu: 'Ала-Арча и Бишкек',
     tagline: 'Glacier Peaks 40 Minutes from Bishkek & Burana Silk Road Tower',
-    imageUrl: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80',
+    imageUrl: '/images/ala-archa-gorge.jpg',
     altitude: '2,100–3,300m',
   },
   'sary-chelek': {
     name: 'Sary-Chelek & Arslanbob',
     nameRu: 'Сары-Челек и Арсланбоб',
     tagline: 'UNESCO Biosphere Alpine Lakes & Ancient Walnut Forests',
-    imageUrl: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=900&q=80',
+    imageUrl: '/images/sary-chelek-lake.jpg',
     altitude: '1,873m',
   },
   'pamir-osh': {
-    name: 'Osh & Pamir Basecamps',
+    name: 'Osh & Lenin Peak Basecamp',
     nameRu: 'Ош и Памир (Пик Ленина)',
-    tagline: '3,000-Year-Old Osh Bazaar, Tulpar-Kul Lake & Lenin Peak (7,134m)',
-    imageUrl: 'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=900&q=80',
+    tagline: '3,000-Year-Old Osh Bazaar, Tulpar-Kul Lake & 7,134m Lenin Peak',
+    imageUrl: '/images/pamir-lenin-peak.jpg',
     altitude: '3,600m',
   },
 };
 
-export const ACTIVITY_META: Record<ActivityType, { label: string; iconName: string }> = {
-  'jeep-4wd': { label: '4WD Jeep Expeditions', iconName: 'Compass' },
-  horseback: { label: 'Horseback Nomadic Treks', iconName: 'Mountain' },
-  trekking: { label: 'High-Altitude Trekking', iconName: 'Footprints' },
-  'cultural-yurt': { label: 'Yurt & Eagle Culture', iconName: 'Tent' },
-  'day-trip': { label: '1-Day Excursions', iconName: 'Sun' },
-  'winter-ski': { label: 'Winter Ski & Freeride', iconName: 'Snowflake' },
+export const ACTIVITY_META: Record<ActivityType, { label: string; shortLabel: string; iconName: string }> = {
+  'jeep-4wd': { label: '4WD Jeep Expeditions', shortLabel: '4WD Expeditions', iconName: 'Compass' },
+  horseback: { label: 'Horseback Nomadic Treks', shortLabel: 'Horseback Treks', iconName: 'Mountain' },
+  trekking: { label: 'High-Altitude Trekking', shortLabel: 'Alpine Trekking', iconName: 'Footprints' },
+  'cultural-yurt': { label: 'Yurt & Eagle Culture', shortLabel: 'Yurt & Culture', iconName: 'Tent' },
+  'day-trip': { label: '1-Day Excursions', shortLabel: 'Day Trips', iconName: 'Sun' },
+  'winter-ski': { label: 'Winter Ski & Freeride', shortLabel: 'Ski & Freeride', iconName: 'Snowflake' },
 };
 
 export const DIFFICULTY_META: Record<
@@ -287,33 +278,33 @@ export const DIFFICULTY_META: Record<
 > = {
   1: {
     label: '1/5 Easy (Sightseeing)',
-    short: 'Easy 1/5',
+    short: 'Easy',
     description: 'Short walks on flat trails; suitable for all ages and families.',
     colorClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   },
   2: {
     label: '2/5 Moderate (Light Active)',
-    short: 'Moderate 2/5',
+    short: 'Moderate',
     description: '1–3 hour scenic walks or gentle horseback rides; no prior experience required.',
-    colorClass: 'bg-teal-50 text-teal-700 border-teal-200',
+    colorClass: 'bg-[#E6F5F0] text-[#006B52] border-[#008768]/20',
   },
   3: {
     label: '3/5 Active (Mountain Trails)',
-    short: 'Active 3/5',
+    short: 'Active',
     description: '3–5 hours daily hiking or horseback riding up to 3,200m altitude.',
-    colorClass: 'bg-amber-50 text-amber-700 border-amber-200',
+    colorClass: 'bg-amber-50 text-amber-800 border-amber-200',
   },
   4: {
     label: '4/5 Challenging (High Altitude)',
-    short: 'Challenging 4/5',
+    short: 'Challenging',
     description: 'Steep mountain passes up to 3,900m (e.g., Ala-Kul); good cardiovascular fitness needed.',
-    colorClass: 'bg-orange-50 text-orange-700 border-orange-200',
+    colorClass: 'bg-orange-50 text-orange-800 border-orange-200',
   },
   5: {
     label: '5/5 Expedition (Autonomous)',
-    short: 'Expedition 5/5',
+    short: 'Expedition',
     description: 'Multi-day high-altitude expedition above 4,000m; prior trekking experience required.',
-    colorClass: 'bg-rose-50 text-rose-700 border-rose-200',
+    colorClass: 'bg-rose-50 text-rose-800 border-rose-200',
   },
 };
 
@@ -323,7 +314,7 @@ export const COMFORT_META: Record<
 > = {
   basic_tent: {
     label: 'Camping Tents & Mountain Huts',
-    short: 'Tents',
+    short: 'Tents & Camps',
     description: '2-person expedition tents, sleeping mats provided, camp meals under the stars.',
   },
   nomadic_yurt: {
@@ -337,7 +328,7 @@ export const COMFORT_META: Record<
     description: 'Twin rooms with private bathrooms on most nights; upgraded boutique yurts at lakes.',
   },
   comfort_hotel: {
-    label: 'Comfort 3–4* Hotels & Luxury Eco-Lodges',
+    label: 'Comfort 3–4* Hotels & Eco-Lodges',
     short: 'Comfort Hotels',
     description: 'Private en-suite rooms in top regional hotels and premium heated glamping domes.',
   },
@@ -345,12 +336,12 @@ export const COMFORT_META: Record<
 
 export const CURRENCY_RATES: Record<
   CurrencyCode,
-  { symbol: string; rateFromUsd: number; label: string }
+  { symbol: string; rateFromUsd: number; label: string; flag: string }
 > = {
-  USD: { symbol: '$', rateFromUsd: 1, label: 'USD ($)' },
-  KGS: { symbol: 'сом ', rateFromUsd: 86.8, label: 'KGS (сом)' },
-  EUR: { symbol: '€', rateFromUsd: 0.92, label: 'EUR (€)' },
-  RUB: { symbol: '₽', rateFromUsd: 96.5, label: 'RUB (₽)' },
+  USD: { symbol: '$', rateFromUsd: 1, label: 'USD ($)', flag: '🇺🇸' },
+  KGS: { symbol: 'сом', rateFromUsd: 86.8, label: 'KGS (сом)', flag: '🇰🇬' },
+  EUR: { symbol: '€', rateFromUsd: 0.92, label: 'EUR (€)', flag: '🇪🇺' },
+  RUB: { symbol: '₽', rateFromUsd: 96.5, label: 'RUB (₽)', flag: '🇷🇺' },
 };
 
 export function formatMoney(amountUsd: number, currency: CurrencyCode = 'USD'): string {
@@ -365,3 +356,37 @@ export function formatMoney(amountUsd: number, currency: CurrencyCode = 'USD'): 
   return `${cfg.symbol}${converted.toLocaleString('en-US')}`;
 }
 
+export function formatShortDate(isoDate: string): string {
+  if (!isoDate) return '';
+  const parts = isoDate.split('-').map(Number);
+  if (parts.length !== 3 || parts.some(isNaN)) return isoDate;
+  const dt = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+  return dt.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+export function formatDateRange(startIso: string, endIso: string): string {
+  if (!startIso) return '';
+  if (!endIso || startIso === endIso) return formatShortDate(startIso);
+  const sParts = startIso.split('-').map(Number);
+  const eParts = endIso.split('-').map(Number);
+  if (sParts.length !== 3 || eParts.length !== 3) return `${startIso} – ${endIso}`;
+  const sDt = new Date(Date.UTC(sParts[0], sParts[1] - 1, sParts[2]));
+  const eDt = new Date(Date.UTC(eParts[0], eParts[1] - 1, eParts[2]));
+  const sStr = sDt.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+  const eStr = eDt.toLocaleDateString('en-US', {
+    month: sParts[1] === eParts[1] ? undefined : 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  return `${sStr} – ${eStr}`;
+}

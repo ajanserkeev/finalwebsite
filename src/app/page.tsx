@@ -11,12 +11,15 @@ import {
   ArrowRight,
   Users,
   Calendar,
-  Compass,
   Award,
-  Building2,
-  SlidersHorizontal,
-  Sparkles,
   MapPin,
+  Compass,
+  Mountain,
+  Footprints,
+  Tent,
+  Sun,
+  Sparkles,
+  Building2,
 } from 'lucide-react';
 import { useMarketplace } from '@/context/MarketplaceContext';
 import {
@@ -25,254 +28,352 @@ import {
   KyrgyzstanRegion,
   ActivityType,
   formatMoney,
+  formatShortDate,
 } from '@/types/marketplace';
 import { TourCard } from '@/components/TourCard';
 
-/** S-001: Home & Kyrgyzstan Destination Discovery */
+const CATEGORY_TABS: { id: 'all' | ActivityType; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { id: 'all', label: 'All Experiences', icon: Sparkles },
+  { id: 'jeep-4wd', label: '4WD Expeditions', icon: Compass },
+  { id: 'horseback', label: 'Horseback Treks', icon: Mountain },
+  { id: 'trekking', label: 'Alpine Trekking', icon: Footprints },
+  { id: 'cultural-yurt', label: 'Yurt & Eagle Culture', icon: Tent },
+  { id: 'day-trip', label: '1-Day Trips', icon: Sun },
+];
+
 export default function HomePage() {
   const router = useRouter();
-  const { organizers, tours, departures, reviews, currency, setActivePartnerId } =
-    useMarketplace();
+  const { organizers, tours, departures, reviews, currency } = useMarketplace();
 
+  const [searchText, setSearchText] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [selectedActivity, setSelectedActivity] = useState<string>('all');
-  const [selectedDuration, setSelectedDuration] = useState<string>('all');
-
-  // R-013: Only published tours from verified organizers appear publicly
-  const verifiedOrganizerIds = new Set(
-    organizers.filter((o) => o.isVerified && o.verificationStatus === 'verified').map((o) => o.id)
-  );
-  const publishedTours = tours.filter(
-    (t) => t.status === 'published' && verifiedOrganizerIds.has(t.organizerId)
-  );
+  const [activeCategoryTab, setActiveCategoryTab] = useState<'all' | ActivityType>('all');
 
   const verifiedOrganizers = organizers.filter(
     (o) => o.isVerified && o.verificationStatus === 'verified'
   );
+  const verifiedOrganizerIds = new Set(verifiedOrganizers.map((o) => o.id));
+  const publishedTours = tours.filter(
+    (t) => t.status === 'published' && verifiedOrganizerIds.has(t.organizerId)
+  );
 
-  const handleSearch = (e: React.FormEvent) => {
+  const visibleFeaturedTours =
+    activeCategoryTab === 'all'
+      ? publishedTours
+      : publishedTours.filter((t) => t.activityTypes.includes(activeCategoryTab));
+
+  const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
+    if (searchText.trim()) params.set('q', searchText.trim());
     if (selectedRegion !== 'all') params.set('region', selectedRegion);
     if (selectedActivity !== 'all') params.set('activity', selectedActivity);
-    if (selectedDuration !== 'all') params.set('duration', selectedDuration);
-    router.push(`/tours?${params.toString()}`);
+    const qs = params.toString();
+    router.push(qs ? `/tours?${qs}` : '/tours');
   };
 
   return (
-    <div className="space-y-16">
-      {/* Hero Banner with 4-Field Search & Direct-Price Guarantee */}
-      <section className="relative bg-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=80"
-            alt="Kyrgyzstan Alpine Mountains & Song-Kul Yurts"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/75 to-slate-900/50" />
-        </div>
+    <div className="bg-white">
+      {/* Viator Editorial Full-Bleed Hero */}
+      <section className="relative min-h-[540px] sm:min-h-[580px] flex items-center overflow-hidden bg-gray-900">
+        <img
+          src="/images/hero-song-kul.jpg"
+          alt="Song-Kul Alpine Lake and traditional felt yurts in Kyrgyzstan"
+          className="absolute inset-0 w-full h-full object-cover object-center scale-[1.01]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/70" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-8">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/20 border border-teal-400/40 text-teal-300 text-xs font-bold">
-              <ShieldCheck className="w-4 h-4" />
-              Kyrgyzstan Tour Bridge Aggregator · 100% Direct Organizer Prices
-            </div>
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 w-full text-center space-y-7">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs font-semibold">
+            <ShieldCheck className="w-4 h-4 text-emerald-300" />
+            Direct from Verified Kyrgyz Organizers · Same Price as Direct (0% Markup)
+          </div>
 
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-              Book Kyrgyzstan Tours Directly with Verified Local Organizers.{' '}
-              <span className="text-teal-400">Zero Markups.</span>
+          <div className="space-y-3 max-w-3xl mx-auto">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.08] drop-shadow-sm">
+              Do more in Kyrgyzstan
             </h1>
-
-            <p className="text-base sm:text-lg text-slate-200 leading-relaxed">
-              See the real local organizer upfront, read verified reviews from real travelers, lock your seat with a{' '}
-              <strong className="text-white">20% online reservation deposit</strong>, and pay the remaining balance directly to your organizer on arrival in Bishkek, Karakol, or Osh.
+            <p className="text-base sm:text-lg text-white/90 font-medium max-w-2xl mx-auto leading-relaxed">
+              Book small-group yurt camps, 4WD expeditions, and alpine treks directly with licensed local operators. Reserve today with a 20% deposit & free cancellation.
             </p>
           </div>
 
-          {/* C-001 Hero Search Bar */}
+          {/* Viator Iconic Unified Pill Search Bar */}
           <form
-            onSubmit={handleSearch}
-            className="bg-white text-slate-900 p-3 sm:p-4 rounded-2xl shadow-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-4 gap-3 max-w-5xl"
+            onSubmit={handleHeroSearch}
+            className="max-w-4xl mx-auto bg-white rounded-3xl md:rounded-full p-2.5 md:p-2 shadow-2xl border border-white/40 flex flex-col md:flex-row items-stretch md:items-center gap-2 text-left"
           >
-            <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                1. Kyrgyzstan Region
+            <div className="flex-1 flex items-center gap-2.5 px-4 py-2.5 md:py-2">
+              <Search className="w-5 h-5 text-gray-400 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <label
+                  htmlFor="hero-search-input"
+                  className="block text-[10px] font-bold uppercase tracking-wider text-gray-500"
+                >
+                  Where to?
+                </label>
+                <input
+                  id="hero-search-input"
+                  type="text"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  placeholder="Song-Kul, Ala-Kul, Karakol, horseback..."
+                  className="w-full text-sm font-semibold text-gray-900 placeholder:text-gray-400 placeholder:font-normal focus:outline-none bg-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="hidden md:block w-px h-9 bg-gray-200" />
+
+            <div className="md:w-52 px-4 py-2 border-t md:border-t-0 border-gray-100">
+              <label
+                htmlFor="hero-region-select"
+                className="block text-[10px] font-bold uppercase tracking-wider text-gray-500"
+              >
+                Region
               </label>
               <select
+                id="hero-region-select"
                 value={selectedRegion}
                 onChange={(e) => setSelectedRegion(e.target.value)}
-                className="w-full bg-transparent text-sm font-semibold text-slate-900 focus:outline-none mt-0.5"
+                className="w-full text-sm font-semibold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
               >
-                <option value="all">All Regions of Kyrgyzstan</option>
+                <option value="all">All Kyrgyzstan</option>
                 {(Object.keys(REGION_META) as KyrgyzstanRegion[]).map((reg) => (
                   <option key={reg} value={reg}>
-                    {REGION_META[reg].name} ({REGION_META[reg].altitude})
+                    {REGION_META[reg].name}
                   </option>
                 ))}
               </select>
             </div>
 
-            <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                2. Tour Style / Activity
+            <div className="hidden md:block w-px h-9 bg-gray-200" />
+
+            <div className="md:w-48 px-4 py-2 border-t md:border-t-0 border-gray-100">
+              <label
+                htmlFor="hero-activity-select"
+                className="block text-[10px] font-bold uppercase tracking-wider text-gray-500"
+              >
+                Tour Style
               </label>
               <select
+                id="hero-activity-select"
                 value={selectedActivity}
                 onChange={(e) => setSelectedActivity(e.target.value)}
-                className="w-full bg-transparent text-sm font-semibold text-slate-900 focus:outline-none mt-0.5"
+                className="w-full text-sm font-semibold text-gray-900 bg-transparent focus:outline-none cursor-pointer"
               >
-                <option value="all">All Activities</option>
+                <option value="all">Any Style</option>
                 {(Object.keys(ACTIVITY_META) as ActivityType[]).map((act) => (
                   <option key={act} value={act}>
-                    {ACTIVITY_META[act].label}
+                    {ACTIVITY_META[act].shortLabel}
                   </option>
                 ))}
-              </select>
-            </div>
-
-            <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                3. Duration
-              </label>
-              <select
-                value={selectedDuration}
-                onChange={(e) => setSelectedDuration(e.target.value)}
-                className="w-full bg-transparent text-sm font-semibold text-slate-900 focus:outline-none mt-0.5"
-              >
-                <option value="all">Any Duration (1–10+ Days)</option>
-                <option value="1">1-Day Excursions</option>
-                <option value="2-5">2–5 Days (Short Expeditions)</option>
-                <option value="6+">6–10 Days (Grand Circuits)</option>
               </select>
             </div>
 
             <button
               type="submit"
-              className="flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl px-6 py-3.5 shadow-md transition cursor-pointer"
+              className="px-7 py-3.5 rounded-2xl md:rounded-full bg-[#008768] hover:bg-[#006B52] text-white font-display font-bold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
               <Search className="w-4 h-4" />
-              Explore {publishedTours.length} Direct Tours
+              Search
             </button>
           </form>
 
-          {/* Trust Pills */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl text-xs text-slate-200 pt-2">
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xs px-3.5 py-2.5 rounded-xl border border-white/15">
-              <ShieldCheck className="w-4 h-4 text-teal-400 shrink-0" />
-              <span>
-                <strong>Same Price as Direct</strong> (0% OTA Markup)
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xs px-3.5 py-2.5 rounded-xl border border-white/15">
-              <Users className="w-4 h-4 text-teal-400 shrink-0" />
-              <span>
-                <strong>Open Organizer Identity</strong> Before Booking
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xs px-3.5 py-2.5 rounded-xl border border-white/15">
-              <Award className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>
-                <strong>100% Verified Reviews</strong> by Real Tourists
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xs px-3.5 py-2.5 rounded-xl border border-white/15">
-              <Calendar className="w-4 h-4 text-teal-400 shrink-0" />
-              <span>
-                <strong>20% Online Deposit</strong> · Free Cancellation
-              </span>
-            </div>
+          {/* Popular Quick Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+            <span className="text-white/75 font-medium mr-1">Trending:</span>
+            {[
+              { label: 'Song-Kul Yurts', href: '/tours?region=song-kul' },
+              { label: 'Ala-Kul Glacier Trek', href: '/tours?region=karakol' },
+              { label: 'Kel-Suu Canyon', href: '/tours?region=kel-suu' },
+              { label: 'Horseback Riding', href: '/tours?activity=horseback' },
+              { label: 'Bishkek Day Trips', href: '/tours?activity=day-trip' },
+            ].map((chip) => (
+              <Link
+                key={chip.label}
+                href={chip.href}
+                className="px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-xs border border-white/20 text-white font-semibold transition"
+              >
+                {chip.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Quick Role Showcase Banner (For Evaluator / Founder) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
-        <div className="bg-white rounded-2xl border border-teal-200 shadow-lg p-5 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start justify-between gap-3">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-700">
-                1. Public Tourist Bridge
-              </span>
-              <h3 className="font-bold text-sm text-slate-900 mt-0.5">
-                Open Organizers & Direct Prices
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Compare group dates, inspect the real Kyrgyz tour company, and book with a 20% deposit.
-              </p>
-            </div>
-            <Link
-              href="/tours"
-              className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold shrink-0 hover:bg-slate-800"
-            >
-              Browse
-            </Link>
-          </div>
-
-          <div className="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200 flex items-start justify-between gap-3">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-800">
-                2. Tour Operator Dedicated Page
-              </span>
-              <h3 className="font-bold text-sm text-slate-900 mt-0.5">
-                Tours Sold & People Signed Up
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Partner dashboard tracking bookings sold, total participants signed up, seat quotas & manifests.
-              </p>
-            </div>
-            <Link
-              href="/partner"
-              className="px-3 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-semibold shrink-0 hover:bg-teal-700 flex items-center gap-1"
-            >
-              <Building2 className="w-3.5 h-3.5" />
-              Partner Portal
-            </Link>
-          </div>
-
-          <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200 flex items-start justify-between gap-3">
-            <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">
-                3. Separate Admin Panel
-              </span>
-              <h3 className="font-bold text-sm text-slate-900 mt-0.5">
-                KYC, Price Parity & Escrow Ledger
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Verify operators, audit direct-price parity, manage commissions & process deposit refunds.
-              </p>
-            </div>
-            <Link
-              href="/admin"
-              className="px-3 py-1.5 rounded-lg bg-amber-600 text-white text-xs font-semibold shrink-0 hover:bg-amber-700 flex items-center gap-1"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              Admin Panel
-            </Link>
+      {/* Viator Clean 4-Pillar Trust Strip */}
+      <section className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: ShieldCheck,
+                title: '0% Markup Direct Price',
+                desc: 'Pay the exact same price as booking directly with the Kyrgyz organizer.',
+              },
+              {
+                icon: Calendar,
+                title: 'Reserve Now, Pay Later',
+                desc: 'Lock your seat with a 20% deposit; pay 80% directly to your organizer on Day 1.',
+              },
+              {
+                icon: Users,
+                title: 'Open Local Organizers',
+                desc: 'See the real licensed company, 4WD fleet, and guides before you book.',
+              },
+              {
+                icon: Award,
+                title: '100% Verified Reviews',
+                desc: 'Every review comes exclusively from travelers who completed the trip.',
+              },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="flex items-start gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-[#E6F5F0] text-[#008768] flex items-center justify-center shrink-0">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="font-display font-bold text-sm text-gray-900">
+                      {item.title}
+                    </h2>
+                    <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Kyrgyzstan Destination Regions Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* Top-Rated Kyrgyzstan Tours + Interactive Category Filter Pills */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 space-y-7">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-600">
-              Explore by Destination
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
-              Iconic Regions of Kyrgyzstan
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Top Experiences in Kyrgyzstan
             </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              Handpicked multi-day expeditions and day trips at verified direct organizer prices.
+            </p>
           </div>
           <Link
             href="/tours"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-teal-700 hover:text-teal-800"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#008768] hover:text-[#006B52] shrink-0"
           >
-            View All Regions & Tours <ArrowRight className="w-4 h-4" />
+            See all {publishedTours.length} experiences
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Interactive Viator Category Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          {CATEGORY_TABS.map((tab) => {
+            const Icon = tab.icon;
+            const active = activeCategoryTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveCategoryTab(tab.id)}
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition cursor-pointer border ${
+                  active
+                    ? 'bg-gray-900 text-white border-gray-900 shadow-xs'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                }`}
+              >
+                <Icon className={`w-4 h-4 ${active ? 'text-emerald-400' : 'text-[#008768]'}`} />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {visibleFeaturedTours.length === 0 ? (
+          <div className="p-10 rounded-2xl border border-gray-200 bg-gray-50 text-center space-y-2">
+            <p className="font-bold text-gray-900 text-sm">
+              No published tours in this category right now.
+            </p>
+            <button
+              onClick={() => setActiveCategoryTab('all')}
+              className="text-xs font-bold text-[#008768] hover:underline cursor-pointer"
+            >
+              Show all experiences
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleFeaturedTours.map((tour) => {
+              const org = organizers.find((o) => o.id === tour.organizerId);
+              if (!org) return null;
+              const tourDeps = departures.filter((d) => d.tourId === tour.id);
+              return (
+                <TourCard
+                  key={tour.id}
+                  tour={tour}
+                  organizer={org}
+                  departures={tourDeps}
+                />
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* Viator Pastel Mint Free Cancellation & Direct-Price Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
+        <div className="rounded-3xl bg-[#E6F5F0] px-6 sm:px-12 py-10 sm:py-12 text-center space-y-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#006B52] text-xs font-bold shadow-xs">
+            <ShieldCheck className="w-4 h-4 text-[#008768]" />
+            Keep travel flexible
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-[#003322]">
+            Free cancellation & 20% deposit lock
+          </h2>
+          <p className="text-sm sm:text-base text-[#004F32]/85 max-w-2xl mx-auto leading-relaxed">
+            Reserve your spot in a guaranteed group departure for just 20% online. Cancel up to 15 days in advance for a 100% deposit refund — and pay the remaining 80% directly to your local Kyrgyz organizer when you arrive.
+          </p>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/tours"
+              className="px-6 py-3 rounded-full bg-[#008768] hover:bg-[#006B52] text-white font-display font-bold text-sm transition shadow-sm"
+            >
+              Explore Guaranteed Departures
+            </Link>
+            <Link
+              href="/organizers"
+              className="px-6 py-3 rounded-full bg-white hover:bg-gray-50 text-[#004F32] font-display font-bold text-sm border border-[#008768]/20 transition"
+            >
+              Compare Local Organizers
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Top Destinations in Kyrgyzstan (All 7 Regions) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Top Destinations in Kyrgyzstan
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              From 3,016m nomadic pastures at Song-Kul to 7,134m Lenin Peak basecamp.
+            </p>
+          </div>
+          <Link
+            href="/tours"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#008768] hover:text-[#006B52]"
+          >
+            All destinations
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* First Row: 4 Primary Iconic Regions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {(Object.keys(REGION_META) as KyrgyzstanRegion[]).slice(0, 4).map((regKey) => {
             const meta = REGION_META[regKey];
             const matchingTours = publishedTours.filter((t) => t.regions.includes(regKey));
@@ -285,30 +386,73 @@ export default function HomePage() {
               <Link
                 key={regKey}
                 href={`/tours?region=${regKey}`}
-                className="group relative h-64 rounded-2xl overflow-hidden border border-slate-200 shadow-xs"
+                className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-gray-100 shadow-xs hover:shadow-xl transition-all duration-300"
               >
                 <img
                   src={meta.imageUrl}
                   alt={meta.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
-                <div className="absolute top-3 left-3 right-3 flex items-center justify-between text-[11px] font-semibold text-white">
-                  <span className="px-2.5 py-1 rounded-full bg-slate-900/75 backdrop-blur-xs flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-teal-400" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-xs text-white text-[11px] font-semibold">
+                    <MapPin className="w-3 h-3 text-emerald-300" />
                     {meta.altitude}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-teal-600/90">
-                    {matchingTours.length} {matchingTours.length === 1 ? 'tour' : 'tours'}
                   </span>
                 </div>
                 <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
-                  <h3 className="font-extrabold text-lg leading-tight group-hover:text-teal-300 transition">
+                  <h3 className="font-display font-extrabold text-lg leading-tight">
                     {meta.name}
                   </h3>
-                  <p className="text-xs text-slate-300 line-clamp-2">{meta.tagline}</p>
-                  <div className="text-xs font-bold text-teal-400 pt-1">
-                    Direct from {formatMoney(minPrice, currency)} →
+                  <p className="text-xs text-white/80 line-clamp-2">{meta.tagline}</p>
+                  <div className="pt-1.5 flex items-center justify-between text-xs font-bold">
+                    <span className="text-emerald-300">
+                      From {formatMoney(minPrice, currency)}
+                    </span>
+                    <span className="text-white/90">
+                      {matchingTours.length} {matchingTours.length === 1 ? 'tour' : 'tours'} →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Second Row: 3 Additional Regions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {(Object.keys(REGION_META) as KyrgyzstanRegion[]).slice(4).map((regKey) => {
+            const meta = REGION_META[regKey];
+            const matchingTours = publishedTours.filter((t) => t.regions.includes(regKey));
+            const minPrice =
+              matchingTours.length > 0
+                ? Math.min(...matchingTours.map((t) => t.basePriceUsd))
+                : 85;
+
+            return (
+              <Link
+                key={regKey}
+                href={`/tours?region=${regKey}`}
+                className="group relative h-52 rounded-2xl overflow-hidden bg-gray-100 shadow-xs hover:shadow-xl transition-all duration-300"
+              >
+                <img
+                  src={meta.imageUrl}
+                  alt={meta.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+                  <div className="text-[11px] font-semibold text-emerald-300 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" /> {meta.altitude}
+                  </div>
+                  <h3 className="font-display font-extrabold text-lg leading-tight">
+                    {meta.name}
+                  </h3>
+                  <div className="flex items-center justify-between text-xs pt-0.5">
+                    <span className="text-white/80 line-clamp-1 mr-2">{meta.tagline}</span>
+                    <span className="font-bold text-white shrink-0">
+                      From {formatMoney(minPrice, currency)} →
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -317,56 +461,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Tours with Open Organizer & Direct Price */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-600">
-              0% Markup · Direct from Organizers
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
-              Top-Rated Tours in Kyrgyzstan
-            </h2>
-          </div>
-          <Link
-            href="/tours"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-teal-700 hover:text-teal-800"
-          >
-            Filter All {publishedTours.length} Tours <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {publishedTours.map((tour) => {
-            const org = organizers.find((o) => o.id === tour.organizerId)!;
-            const tourDeps = departures.filter((d) => d.tourId === tour.id);
-            return (
-              <TourCard
-                key={tour.id}
-                tour={tour}
-                organizer={org}
-                departures={tourDeps}
-              />
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Open Verified Organizers Showcase (C-003) */}
-      <section className="bg-slate-900 text-white py-16">
+      {/* Verified Local Kyrgyz Organizers (Clean Light Editorial Showcase) */}
+      <section className="bg-[#F7F8F9] border-y border-gray-200/80 mt-20 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-teal-400">
-                Full Transparency (Unlike Opaque OTAs)
+              <span className="text-xs font-bold uppercase tracking-wider text-[#008768]">
+                100% Open Organizer Transparency
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold mt-1">
-                Meet Your Verified Local Kyrgyz Organizers
+              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
+                Book Directly with Licensed Kyrgyz Operators
               </h2>
-              <p className="text-sm text-slate-300 mt-2">
-                We never hide the tour operator. Inspect every organizer’s legal registration, 4WD fleet, mountain guides, total travelers hosted, and verified tourist reviews before you book.
+              <p className="text-sm text-gray-600 mt-1.5">
+                Unlike opaque resellers, we show every tour operator’s license, local 4WD fleet, guides, travelers hosted, and real reviews upfront.
               </p>
             </div>
+            <Link
+              href="/organizers"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-[#008768] hover:text-[#006B52] shrink-0"
+            >
+              View all organizers
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -375,75 +491,83 @@ export default function HomePage() {
               return (
                 <div
                   key={org.id}
-                  className="bg-slate-800/90 rounded-2xl border border-slate-700 p-6 flex flex-col justify-between space-y-5"
+                  className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
                 >
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3.5">
-                      <img
-                        src={org.logoUrl}
-                        alt={org.brandName}
-                        className="w-14 h-14 rounded-2xl object-cover border-2 border-teal-400 shrink-0"
-                      />
-                      <div>
-                        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-teal-400">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Verified Kyrgyz Operator · {org.baseCity}
-                        </div>
-                        <Link
-                          href={`/organizers/${org.slug}`}
-                          className="block font-bold text-lg text-white hover:text-teal-300 transition"
-                        >
-                          {org.brandName}
-                        </Link>
-                        <div className="text-[11px] text-slate-400">{org.legalName}</div>
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
-                      {org.bio}
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-2 pt-1 text-center">
-                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700">
-                        <div className="text-sm font-extrabold text-amber-400 flex items-center justify-center gap-1">
-                          <Star className="w-3.5 h-3.5 fill-amber-400" />
-                          {org.ratingAvg.toFixed(2)}
-                        </div>
-                        <div className="text-[10px] text-slate-400">
-                          {org.reviewsCount} reviews
-                        </div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700">
-                        <div className="text-sm font-extrabold text-white">
-                          {org.toursSoldCount}
-                        </div>
-                        <div className="text-[10px] text-slate-400">Tours Sold</div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700">
-                        <div className="text-sm font-extrabold text-teal-400">
-                          {org.peopleSignedUpCount}
-                        </div>
-                        <div className="text-[10px] text-slate-400">Travelers Signed Up</div>
-                      </div>
-                    </div>
+                  <div className="h-28 relative overflow-hidden bg-gray-100">
+                    <img
+                      src={org.coverUrl}
+                      alt={org.brandName}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 text-[#006B52] text-[11px] font-bold flex items-center gap-1 shadow-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#008768]" />
+                      Verified · {org.baseCity}
+                    </span>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-700/80 flex items-center justify-between gap-2">
-                    <Link
-                      href={`/organizers/${org.slug}`}
-                      className="text-xs font-bold text-teal-400 hover:text-teal-300 inline-flex items-center gap-1"
-                    >
-                      View {orgTours.length} Tours & {org.reviewsCount} Reviews
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 -mt-10 relative z-10">
+                        <img
+                          src={org.logoUrl}
+                          alt={org.brandName}
+                          className="w-14 h-14 rounded-2xl object-cover border-[3px] border-white shadow-md bg-white shrink-0"
+                        />
+                        <div className="pt-5 min-w-0">
+                          <Link
+                            href={`/organizers/${org.slug}`}
+                            className="font-display font-bold text-base text-gray-900 hover:text-[#008768] transition block truncate"
+                          >
+                            {org.brandName}
+                          </Link>
+                          <div className="text-[11px] text-gray-500 truncate">
+                            Est. {org.foundedYear} · {org.languages.join(', ')}
+                          </div>
+                        </div>
+                      </div>
 
-                    <Link
-                      href="/partner"
-                      onClick={() => setActivePartnerId(org.id)}
-                      className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium transition"
-                    >
-                      View Operator Dashboard
-                    </Link>
+                      <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                        {org.bio}
+                      </p>
+
+                      <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                        <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                          <div className="text-sm font-extrabold text-gray-900 flex items-center justify-center gap-1">
+                            <Star className="w-3.5 h-3.5 fill-[#008768] text-[#008768]" />
+                            {org.ratingAvg.toFixed(1)}
+                          </div>
+                          <div className="text-[10px] text-gray-500">
+                            {org.reviewsCount} reviews
+                          </div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                          <div className="text-sm font-extrabold text-gray-900">
+                            {org.toursSoldCount}
+                          </div>
+                          <div className="text-[10px] text-gray-500">Tours Sold</div>
+                        </div>
+                        <div className="p-2.5 rounded-xl bg-[#F0FAF6] border border-[#008768]/15">
+                          <div className="text-sm font-extrabold text-[#006B52]">
+                            {org.peopleSignedUpCount}
+                          </div>
+                          <div className="text-[10px] text-[#006B52]">Travelers</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                      <Link
+                        href={`/organizers/${org.slug}`}
+                        className="text-xs font-bold text-[#008768] hover:text-[#006B52] inline-flex items-center gap-1"
+                      >
+                        See {orgTours.length} {orgTours.length === 1 ? 'tour' : 'tours'} & reviews
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                      <span className="text-[11px] font-semibold text-gray-400">
+                        0% Markup
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
@@ -452,66 +576,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How the Direct-Price Bridge Works */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-600">
-            Inspired by Bolshaya Strana & Viator
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-            How Direct-Price Booking Works
-          </h2>
-          <p className="text-sm text-slate-600">
-            Why pay 25–30% more on global OTAs when you can book directly with verified Kyrgyz organizers at their official price?
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          {[
-            {
-              step: '01',
-              title: 'Compare Open Organizers',
-              desc: 'Every tour openly shows the real local Kyrgyz operator, their license, guide team, and verified reviews from past travelers.',
-            },
-            {
-              step: '02',
-              title: '100% Direct Price Parity',
-              desc: 'Contractually guaranteed to match the organizer’s own website/Instagram price with 0% markup added on top.',
-            },
-            {
-              step: '03',
-              title: 'Pay Only 20% Deposit Online',
-              desc: 'Lock your seats in a guaranteed departure group via Visa, Mastercard, Finik, or MBANK QR. Free cancellation up to 15 days prior.',
-            },
-            {
-              step: '04',
-              title: 'Pay 80% Balance on Arrival',
-              desc: 'Your organizer receives your manifest immediately in their Partner Portal, and you pay the remaining 80% directly when your tour begins.',
-            },
-          ].map((item) => (
-            <div
-              key={item.step}
-              className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-2"
-            >
-              <div className="text-xs font-extrabold text-teal-600 bg-teal-50 w-8 h-8 rounded-lg flex items-center justify-center">
-                {item.step}
-              </div>
-              <h3 className="font-bold text-base text-slate-900">{item.title}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Latest Verified Tourist Reviews */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* Verified Traveler Reviews */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-600">
-              100% Completed-Booking Gated (Rule R-007)
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
-              Recent Verified Tourist Reviews
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#008768]">
+              <CheckCircle2 className="w-4 h-4" />
+              Verified Bookings Only
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">
+              What Real Travelers Say
             </h2>
           </div>
         </div>
@@ -523,49 +597,63 @@ export default function HomePage() {
             return (
               <div
                 key={rev.id}
-                className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between space-y-4"
+                className="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col justify-between space-y-4 hover:shadow-md transition"
               >
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-bold text-sm text-slate-900">
-                        {rev.authorName}{' '}
-                        <span className="text-xs font-normal text-slate-500">
-                          ({rev.authorCountry})
-                        </span>
-                      </div>
-                      <div className="text-[11px] font-semibold text-emerald-700 flex items-center gap-1 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Verified Tourist · Trip {rev.tripDate}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-0.5 text-amber-400">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-0.5">
                       {Array.from({ length: rev.ratingOverall }).map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                        <Star key={i} className="w-4 h-4 fill-[#008768] text-[#008768]" />
                       ))}
                     </div>
+                    <span className="text-[11px] text-gray-500 font-medium">
+                      {formatShortDate(rev.tripDate)}
+                    </span>
                   </div>
 
-                  <p className="text-xs text-slate-700 leading-relaxed line-clamp-4">
+                  <p className="text-sm text-gray-700 leading-relaxed line-clamp-4">
                     “{rev.comment}”
                   </p>
+
+                  {rev.photos.length > 0 && (
+                    <div className="flex gap-2">
+                      {rev.photos.slice(0, 2).map((img, i) => (
+                        <img
+                          key={i}
+                          src={img}
+                          alt="Verified traveler photo"
+                          className="w-16 h-12 rounded-lg object-cover border border-gray-200"
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 text-xs space-y-1">
+                <div className="pt-3 border-t border-gray-100 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-gray-900">
+                      {rev.authorName}{' '}
+                      <span className="font-normal text-gray-500">· {rev.authorCountry}</span>
+                    </span>
+                    <span className="text-[11px] font-semibold text-[#008768] flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Verified
+                    </span>
+                  </div>
                   {tour && (
                     <Link
                       href={`/tours/${tour.slug}`}
-                      className="block font-semibold text-slate-900 hover:text-teal-700 line-clamp-1"
+                      className="block text-xs font-semibold text-gray-600 hover:text-[#008768] truncate"
                     >
-                      Tour: {tour.title}
+                      {tour.title}
                     </Link>
                   )}
                   {org && (
                     <Link
                       href={`/organizers/${org.slug}`}
-                      className="block text-teal-700 hover:underline font-medium"
+                      className="block text-[11px] font-bold text-[#008768] hover:underline"
                     >
-                      Organizer: {org.brandName} →
+                      Hosted by {org.brandName}
                     </Link>
                   )}
                 </div>
@@ -574,7 +662,39 @@ export default function HomePage() {
           })}
         </div>
       </section>
+
+      {/* Tour Operator Partner Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-16">
+        <div className="rounded-3xl bg-[#0C1D17] text-white p-8 sm:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400">
+              <Building2 className="w-4 h-4" />
+              For Kyrgyzstan Tour Operators & Local Guides
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold">
+              Grow your group bookings with real-time seat & manifest tools
+            </h2>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Get your own verified organizer storefront, track tours sold and total travelers signed up in real time, sync seat quotas in one click, and export participant manifests for your mountain guides.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link
+              href="/partner"
+              className="px-6 py-3.5 rounded-full bg-[#008768] hover:bg-[#006B52] text-white font-display font-bold text-sm transition inline-flex items-center gap-2"
+            >
+              <Building2 className="w-4 h-4" />
+              Open Partner Portal
+            </Link>
+            <Link
+              href="/admin"
+              className="px-5 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-sm transition"
+            >
+              Platform Admin
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
-
